@@ -12,31 +12,31 @@ const storage = new StorageService(config.dataPath);
 const cocktailService = new CocktailService();
 const translationService = new TranslationService();
 
-console.log('🍸 Cocktail Bot is starting...');
+console.log('🍸 Запуск Cocktail Bot...');
 
 handleStart(bot, storage);
 handleIngredients(bot, storage);
 handleSearch(bot, storage, cocktailService, translationService);
 
 bot.on('polling_error', (error) => {
-  console.error('Polling error:', error);
+  console.error('Ошибка polling:', error);
 });
 
 bot.on('error', (error) => {
-  console.error('Bot error:', error);
+  console.error('Ошибка бота:', error);
 });
 
-console.log('✅ Cocktail Bot is running!');
-console.log('Press Ctrl+C to stop the bot');
+console.log('✅ Cocktail Bot запущен!');
+console.log('Нажмите Ctrl+C для остановки бота');
 
 process.on('SIGINT', () => {
-  console.log('\n👋 Shutting down bot...');
+  console.log('\n👋 Остановка бота...');
   bot.stopPolling();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.log('\n👋 Shutting down bot...');
+  console.log('\n👋 Остановка бота...');
   bot.stopPolling();
   process.exit(0);
 });

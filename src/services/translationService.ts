@@ -49,7 +49,7 @@ class TranslationService {
       const response = await axios.post<OpenRouterResponse>(
         this.apiUrl,
         {
-          model: 'openai/gpt-3.5-turbo',
+          model: 'anthropic/claude-sonnet-4.5',
           messages
         },
         {

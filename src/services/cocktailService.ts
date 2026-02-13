@@ -16,7 +16,7 @@ class CocktailService {
       );
       return response.data.drinks || [];
     } catch (error) {
-      console.error(`Error searching by ingredient ${ingredient}:`, error);
+      console.error(`Ошибка поиска по ингредиенту ${ingredient}:`, error);
       return [];
     }
   }
@@ -28,7 +28,7 @@ class CocktailService {
       );
       return response.data.drinks || [];
     } catch (error) {
-      console.error(`Error searching by name "${name}":`, error);
+      console.error(`Ошибка поиска по названию "${name}":`, error);
       return [];
     }
   }
@@ -40,7 +40,7 @@ class CocktailService {
       );
       return response.data.drinks?.[0] || null;
     } catch (error) {
-      console.error(`Error getting cocktail ${id}:`, error);
+      console.error(`Ошибка получения коктейля ${id}:`, error);
       return null;
     }
   }
@@ -52,7 +52,7 @@ class CocktailService {
       );
       return response.data.drinks?.map(d => d.strIngredient1) || [];
     } catch (error) {
-      console.error('Error getting ingredients list:', error);
+      console.error('Ошибка получения списка ингредиентов:', error);
       return [];
     }
   }
@@ -111,7 +111,7 @@ class CocktailService {
         return b.matchCount - a.matchCount;
       });
     } catch (error) {
-      console.error('Error finding cocktails:', error);
+      console.error('Ошибка поиска коктейлей:', error);
       return [];
     }
   }

@@ -80,7 +80,7 @@ const sendNameRecipe = async (
       });
     }
   } catch (error) {
-    console.error('Error sending name search recipe:', error);
+    console.error('Ошибка отправки рецепта (поиск по названию):', error);
     await bot.sendMessage(chatId, recipeText, {
       parse_mode: 'Markdown',
       reply_markup: replyMarkup
@@ -226,7 +226,7 @@ export const sendFindCocktails = async (bot: TelegramBot, chatId: number, userId
       reply_markup: keyboard
     });
   } catch (error) {
-    console.error('Error searching cocktails:', error);
+    console.error('Ошибка поиска коктейлей:', error);
     await bot.deleteMessage(chatId, searchingMsg.message_id);
     await bot.sendMessage(
       chatId,
@@ -328,7 +328,7 @@ export const handleSearch = (bot: TelegramBot, storage: StorageService, cocktail
             });
           }
         } catch (error) {
-          console.error('Error sending recipe:', error);
+          console.error('Ошибка отправки рецепта:', error);
           await bot.sendMessage(chatId, recipeText, {
             parse_mode: 'Markdown',
             reply_markup: recipeMarkup
@@ -383,7 +383,7 @@ export const handleSearch = (bot: TelegramBot, storage: StorageService, cocktail
           text: '❌ Произошла ошибка'
         });
       } catch (e) {
-        console.error('[CALLBACK_ERROR] Failed to answerCallbackQuery:', e);
+        console.error('[CALLBACK_ERROR] Не удалось вызвать answerCallbackQuery:', e);
       }
     }
   });

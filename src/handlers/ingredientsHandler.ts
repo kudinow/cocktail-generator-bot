@@ -284,7 +284,7 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
           text: '❌ Произошла ошибка'
         });
       } catch (e) {
-        console.error('[CALLBACK_ERROR] Failed to answerCallbackQuery:', e);
+        console.error('[CALLBACK_ERROR] Не удалось вызвать answerCallbackQuery:', e);
       }
     }
   });

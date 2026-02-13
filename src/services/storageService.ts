@@ -25,12 +25,12 @@ class StorageService {
         usersArray.forEach(user => {
           this.users.set(user.userId, user);
         });
-        console.log(`Loaded ${this.users.size} users from storage`);
+        console.log(`Загружено ${this.users.size} пользователей из хранилища`);
       } else {
         this.saveData();
       }
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Ошибка загрузки данных:', error);
       this.users = new Map();
     }
   }
@@ -40,7 +40,7 @@ class StorageService {
       const usersArray = Array.from(this.users.values());
       fs.writeFileSync(this.dataPath, JSON.stringify(usersArray, null, 2), 'utf-8');
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error('Ошибка сохранения данных:', error);
     }
   }
 
@@ -63,7 +63,7 @@ class StorageService {
   updateUser(userId: number, updates: Partial<UserData>): UserData {
     const user = this.users.get(userId);
     if (!user) {
-      throw new Error(`User ${userId} not found`);
+      throw new Error(`User ${userId} не найден`);
     }
     const updatedUser = { ...user, ...updates, lastActivity: new Date().toISOString() };
     this.users.set(userId, updatedUser);
@@ -85,7 +85,7 @@ class StorageService {
   removeIngredient(userId: number, ingredient: string): UserData {
     const user = this.getUser(userId);
     if (!user) {
-      throw new Error(`User ${userId} not found`);
+      throw new Error(`User ${userId} не найден`);
     }
     const normalizedIngredient = ingredient.trim().toLowerCase();
     user.ingredients = user.ingredients.filter(
@@ -97,7 +97,7 @@ class StorageService {
   clearIngredients(userId: number): UserData {
     const user = this.getUser(userId);
     if (!user) {
-      throw new Error(`User ${userId} not found`);
+      throw new Error(`User ${userId} не найден`);
     }
     return this.updateUser(userId, { ingredients: [] });
   }
