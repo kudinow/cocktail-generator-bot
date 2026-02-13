@@ -150,14 +150,15 @@ try {
 Файл `.env` должен содержать:
 ```
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-OPENROUTER_API_KEY=your_openrouter_api_key  # Опционально, есть fallback в config.ts
+OPENROUTER_API_KEY=your_openrouter_api_key
 COCKTAIL_API_URL=https://www.thecocktaildb.com/api/json/v1/1  # Опционально
 ```
 
 **Важно:**
 - `TELEGRAM_BOT_TOKEN` — обязателен, иначе приложение не запустится
-- `OPENROUTER_API_KEY` — опционален, если не указан, используется значение из `config.ts`
-- Токен OpenRouter используется для перевода названий коктейлей и рецептов
+- `OPENROUTER_API_KEY` — обязателен для работы перевода названий коктейлей и рецептов
+- Токены хранятся **только в `.env`** — никогда не коммитьте их в Git
+- Используйте `.env.example` как шаблон для настройки окружения
 
 ## Запуск
 
