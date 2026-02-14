@@ -165,6 +165,7 @@ export const sendFindCocktails = async (
   );
 
   try {
+    // Ингредиенты уже на русском языке в storage, используем напрямую
     const cocktails = inshakerService.findByIngredients(ingredients);
     userCocktails.set(userId, cocktails);
 

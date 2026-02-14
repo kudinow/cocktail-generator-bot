@@ -15,10 +15,10 @@ const buildIngredientKeyboard = (userIngredients: string[]) => {
     inline_keyboard: [
       ...popularIngredients.slice(0, 18).reduce((rows: any[], ing, index) => {
         if (index % 3 === 0) rows.push([]);
-        const isSelected = userIngredientsLower.includes(ing.en.toLowerCase());
+        const isSelected = userIngredientsLower.includes(ing.ru.toLowerCase());
         rows[rows.length - 1].push({
           text: isSelected ? `✅ ${ing.ru}` : ing.ru,
-          callback_data: `add_ing_${ing.en}`
+          callback_data: `add_ing_${ing.ru}`
         });
         return rows;
       }, []),
@@ -37,7 +37,7 @@ const buildIngredientMessage = (userIngredients: string[]): string => {
   if (userIngredients.length === 0) {
     return '🥃 *Выберите ингредиенты:*\n\nНажмите на ингредиент, чтобы добавить или убрать его.';
   }
-  const selected = userIngredients.map(i => translateToRussian(i)).join(', ');
+  const selected = userIngredients.join(', ');
   return `🥃 *Выберите ингредиенты (${userIngredients.length}/${config.maxIngredientsPerUser}):*\n\nВыбрано: ${selected}`;
 };
 
@@ -87,13 +87,13 @@ export const sendMyIngredients = async (bot: TelegramBot, chatId: number, userId
 
   let message = `📋 *Ваши ингредиенты (${ingredients.length}/${config.maxIngredientsPerUser}):*\n\n`;
   ingredients.forEach((ing, index) => {
-    message += `${index + 1}. ${translateToRussian(ing)}\n`;
+    message += `${index + 1}. ${ing}\n`;
   });
 
   const keyboard = {
     inline_keyboard: [
       ...ingredients.slice(0, 10).map(ing => [{
-        text: `❌ ${translateToRussian(ing)}`,
+        text: `❌ ${ing}`,
         callback_data: `remove_ing_${ing}`
       }]),
       [
@@ -181,14 +181,13 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
       // --- Toggle ингредиента: добавить / убрать + обновить клавиатуру in-place ---
       if (data.startsWith('add_ing_')) {
         const ingredient = data.replace('add_ing_', '');
-        const ingredientRu = translateToRussian(ingredient);
         const currentIngredients = storage.getIngredients(userId);
         const hasIngredient = currentIngredients.some(i => i.toLowerCase() === ingredient.toLowerCase());
 
         if (hasIngredient) {
           // Убираем ингредиент (toggle off)
           storage.removeIngredient(userId, ingredient);
-          await bot.answerCallbackQuery(query.id, { text: `🗑 Убран: ${ingredientRu}` });
+          await bot.answerCallbackQuery(query.id, { text: `🗑 Убран: ${ingredient}` });
         } else {
           // Проверяем лимит
           if (currentIngredients.length >= config.maxIngredientsPerUser) {
@@ -199,7 +198,7 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
           }
           // Добавляем ингредиент (toggle on)
           storage.addIngredient(userId, ingredient);
-          await bot.answerCallbackQuery(query.id, { text: `✅ Добавлен: ${ingredientRu}` });
+          await bot.answerCallbackQuery(query.id, { text: `✅ Добавлен: ${ingredient}` });
         }
 
         // Обновляем клавиатуру и текст in-place
@@ -238,7 +237,7 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
         const ingredient = data.replace('remove_ing_', '');
         storage.removeIngredient(userId, ingredient);
         await bot.answerCallbackQuery(query.id, {
-          text: `🗑 Удалён: ${translateToRussian(ingredient)}`
+          text: `🗑 Удалён: ${ingredient}`
         });
         await sendMyIngredients(bot, chatId, userId, storage);
         return;
@@ -301,9 +300,9 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
     if (state === 'awaiting_ingredient') {
       userStates.delete(userId);
 
-      const rawIngredient = text.trim();
+      const ingredient = text.trim();
 
-      if (rawIngredient.length < 2 || rawIngredient.length > 50) {
+      if (ingredient.length < 2 || ingredient.length > 50) {
         await bot.sendMessage(
           chatId,
           '⚠️ Название ингредиента должно быть от 2 до 50 символов.'
@@ -311,14 +310,12 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
         return;
       }
 
-      const ingredient = translateToEnglish(rawIngredient);
-      const displayName = rawIngredient;
       storage.addIngredient(userId, ingredient);
       const ingredients = storage.getIngredients(userId);
 
       await bot.sendMessage(
         chatId,
-        `✅ *Ингредиент добавлен!*\n\n${displayName}\n\nВсего ингредиентов: ${ingredients.length}/${config.maxIngredientsPerUser}`,
+        `✅ *Ингредиент добавлен!*\n\n${ingredient}\n\nВсего ингредиентов: ${ingredients.length}/${config.maxIngredientsPerUser}`,
         {
           parse_mode: 'Markdown',
           reply_markup: {
