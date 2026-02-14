@@ -1,7 +1,9 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from './config/config';
 import StorageService from './services/storageService';
-import CocktailService from './services/cocktailService';
+// АРХИВИРОВАНО: TheCocktailDB API заменён на Inshaker
+// import CocktailService from './services/cocktailService';
+import InshakerService from './services/inshakerService';
 import TranslationService from './services/translationService';
 import { handleStart } from './handlers/startHandler';
 import { handleIngredients } from './handlers/ingredientsHandler';
@@ -9,14 +11,16 @@ import { handleSearch } from './handlers/searchHandler';
 
 const bot = new TelegramBot(config.telegramToken, { polling: true });
 const storage = new StorageService(config.dataPath);
-const cocktailService = new CocktailService();
+// АРХИВИРОВАНО: TheCocktailDB API заменён на Inshaker
+// const cocktailService = new CocktailService();
+const inshakerService = new InshakerService();
 const translationService = new TranslationService();
 
 console.log('🍸 Запуск Cocktail Bot...');
 
 handleStart(bot, storage);
 handleIngredients(bot, storage);
-handleSearch(bot, storage, cocktailService, translationService);
+handleSearch(bot, storage, inshakerService);
 
 bot.on('polling_error', (error) => {
   console.error('Ошибка polling:', error);

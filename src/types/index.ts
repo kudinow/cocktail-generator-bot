@@ -5,6 +5,12 @@ export interface UserData {
   lastActivity: string;
 }
 
+// ============================================================
+// АРХИВИРОВАНО: Типы для TheCocktailDB API
+// Эти интерфейсы сохранены для возможного возврата к API
+// См. archive/README.md для деталей
+// ============================================================
+
 export interface Cocktail {
   idDrink: string;
   strDrink: string;
@@ -64,4 +70,26 @@ export interface ApiResponse<T> {
 
 export interface IngredientList {
   strIngredient1: string;
+}
+
+// Интерфейсы для рецептов Inshaker
+export interface InshakerIngredient {
+  name: string;
+  amount: string;
+}
+
+export interface InshakerRecipe {
+  id: number;
+  name: string;
+  nameEn?: string;
+  image: string;
+  category: string;
+  tags: string[];
+  glass: string;
+  ingredients: InshakerIngredient[];
+  instructions: string[];
+  rating?: number;
+  alcoholic: boolean;
+  source: 'inshaker';
+  parsedAt: string;
 }

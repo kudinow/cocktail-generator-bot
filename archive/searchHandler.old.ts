@@ -1,64 +1,98 @@
 import TelegramBot from 'node-telegram-bot-api';
 import StorageService from '../services/storageService';
-import InshakerService, { InshakerRecipeWithMatch } from '../services/inshakerService';
-import { InshakerRecipe } from '../types';
-import {
-  formatInshakerRecipe,
-  formatInshakerRecipeWithMatch,
-  formatInshakerCocktailsList,
-} from '../utils/helpers';
+import CocktailService from '../services/cocktailService';
+import TranslationService from '../services/translationService';
+import { formatCocktailsList, formatCocktailRecipe, translateToRussian } from '../utils/helpers';
 import { config } from '../config/config';
+import { Cocktail } from '../types';
 
-const userCocktails = new Map<number, InshakerRecipeWithMatch[]>();
+const userCocktails = new Map<number, any[]>();
 const userStates = new Map<number, string>();
-const userNameSearchResults = new Map<number, InshakerRecipe[]>();
+const userNameSearchResults = new Map<number, Cocktail[]>();
+
+/** Форматирует рецепт коктейля для поиска по названию (без процента совпадений) */
+const formatNameSearchRecipe = async (
+  cocktail: Cocktail,
+  cocktailService: CocktailService,
+  translationService: TranslationService
+): Promise<string> => {
+  const ingredients = cocktailService.extractIngredients(cocktail).map(i => translateToRussian(i));
+  const measures = cocktailService.extractMeasures(cocktail);
+
+  // Переводим текстовые поля
+  const translatedName = await translationService.translateToRussian(cocktail.strDrink);
+  const translatedCategory = cocktail.strCategory
+    ? await translationService.translateToRussian(cocktail.strCategory)
+    : '';
+  const translatedAlcoholic = cocktail.strAlcoholic
+    ? await translationService.translateToRussian(cocktail.strAlcoholic)
+    : '';
+  const translatedGlass = cocktail.strGlass
+    ? await translationService.translateToRussian(cocktail.strGlass)
+    : '';
+  const translatedInstructions = cocktail.strInstructions
+    ? await translationService.translateToRussian(cocktail.strInstructions)
+    : '';
+
+  let recipe = `🍸 *${translatedName}*\n\n`;
+
+  if (translatedCategory) {
+    recipe += `📁 *Категория:* ${translatedCategory}\n`;
+  }
+  if (translatedAlcoholic) {
+    recipe += `🥃 *Тип:* ${translatedAlcoholic}\n`;
+  }
+  if (translatedGlass) {
+    recipe += `🥂 *Бокал:* ${translatedGlass}\n`;
+  }
+
+  recipe += `\n*Ингредиенты:*\n`;
+  ingredients.forEach((ingredient, index) => {
+    const measure = measures[index] || '';
+    recipe += `• ${measure} ${ingredient}\n`;
+  });
+
+  if (translatedInstructions) {
+    recipe += `\n*Приготовление:*\n${translatedInstructions}\n`;
+  }
+
+  return recipe;
+};
 
 /** Отправляет рецепт одного коктейля (поиск по названию) */
 const sendNameRecipe = async (
-  bot: TelegramBot,
-  chatId: number,
-  recipe: InshakerRecipe,
+  bot: TelegramBot, chatId: number, cocktail: Cocktail,
+  cocktailService: CocktailService, translationService: TranslationService,
   replyMarkup: TelegramBot.InlineKeyboardMarkup
 ) => {
-  const recipeText = formatInshakerRecipe(recipe);
-
+  const recipeText = await formatNameSearchRecipe(cocktail, cocktailService, translationService);
   try {
-    if (recipe.image && recipe.image.startsWith('http')) {
-      await bot.sendPhoto(chatId, recipe.image, {
+    if (cocktail.strDrinkThumb) {
+      await bot.sendPhoto(chatId, cocktail.strDrinkThumb, {
         caption: recipeText,
         parse_mode: 'Markdown',
-        reply_markup: replyMarkup,
-      });
-    } else if (recipe.image) {
-      // Если изображение относительный путь, добавляем базовый URL
-      const imageUrl = `https://ru.inshaker.com${recipe.image}`;
-      await bot.sendPhoto(chatId, imageUrl, {
-        caption: recipeText,
-        parse_mode: 'Markdown',
-        reply_markup: replyMarkup,
+        reply_markup: replyMarkup
       });
     } else {
       await bot.sendMessage(chatId, recipeText, {
         parse_mode: 'Markdown',
-        reply_markup: replyMarkup,
+        reply_markup: replyMarkup
       });
     }
   } catch (error) {
     console.error('Ошибка отправки рецепта (поиск по названию):', error);
     await bot.sendMessage(chatId, recipeText, {
       parse_mode: 'Markdown',
-      reply_markup: replyMarkup,
+      reply_markup: replyMarkup
     });
   }
 };
 
 /** Отображает результаты поиска по названию */
 const displayNameSearchResults = async (
-  bot: TelegramBot,
-  chatId: number,
-  userId: number,
-  cocktails: InshakerRecipe[],
-  inshakerService: InshakerService
+  bot: TelegramBot, chatId: number, userId: number,
+  cocktails: Cocktail[], cocktailService: CocktailService,
+  translationService: TranslationService
 ) => {
   userNameSearchResults.set(userId, cocktails);
 
@@ -70,9 +104,9 @@ const displayNameSearchResults = async (
         reply_markup: {
           inline_keyboard: [
             [{ text: '🔎 Попробовать снова', callback_data: 'search_by_name' }],
-            [{ text: '◀️ Назад', callback_data: 'back_to_menu' }],
-          ],
-        },
+            [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
+          ]
+        }
       }
     );
     return;
@@ -84,12 +118,12 @@ const displayNameSearchResults = async (
       inline_keyboard: [
         [
           { text: '🔎 Найти другой', callback_data: 'search_by_name' },
-          { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' },
+          { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }
         ],
-        [{ text: '◀️ Назад', callback_data: 'back_to_menu' }],
-      ],
+        [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
+      ]
     };
-    await sendNameRecipe(bot, chatId, cocktails[0], replyMarkup);
+    await sendNameRecipe(bot, chatId, cocktails[0], cocktailService, translationService, replyMarkup);
     return;
   }
 
@@ -97,9 +131,9 @@ const displayNameSearchResults = async (
   const limited = cocktails.slice(0, config.maxCocktailsToShow);
   let message = `🔍 Найдено коктейлей: ${cocktails.length}\n\n`;
   limited.forEach((cocktail, index) => {
-    message += `${index + 1}. *${cocktail.name}*`;
-    if (cocktail.category) {
-      message += ` — ${cocktail.category}`;
+    message += `${index + 1}. *${cocktail.strDrink}*`;
+    if (cocktail.strCategory) {
+      message += ` — ${cocktail.strCategory}`;
     }
     message += `\n`;
   });
@@ -107,47 +141,38 @@ const displayNameSearchResults = async (
 
   const keyboard: TelegramBot.InlineKeyboardMarkup = {
     inline_keyboard: [
-      ...limited.map((cocktail, index) => [
-        {
-          text: `${index + 1}. ${cocktail.name}`,
-          callback_data: `name_recipe_${index}`,
-        },
-      ]),
+      ...limited.map((cocktail, index) => [{
+        text: `${index + 1}. ${cocktail.strDrink}`,
+        callback_data: `name_recipe_${index}`
+      }]),
       [
         { text: '🔎 Новый поиск', callback_data: 'search_by_name' },
-        { text: '◀️ Назад', callback_data: 'back_to_menu' },
-      ],
-    ],
+        { text: '◀️ Назад', callback_data: 'back_to_menu' }
+      ]
+    ]
   };
 
   await bot.sendMessage(chatId, message, {
     parse_mode: 'Markdown',
-    reply_markup: keyboard,
+    reply_markup: keyboard
   });
 };
 
-/** Выполняет поиск коктейлей по ингредиентам и отправляет результат */
-export const sendFindCocktails = async (
-  bot: TelegramBot,
-  chatId: number,
-  userId: number,
-  storage: StorageService,
-  inshakerService: InshakerService
-) => {
+/** Выполняет поиск коктейлей и отправляет результат */
+export const sendFindCocktails = async (bot: TelegramBot, chatId: number, userId: number, storage: StorageService, cocktailService: CocktailService) => {
   console.log(`[FIND_COCKTAILS] userId=${userId} chatId=${chatId}`);
   const ingredients = storage.getIngredients(userId);
 
   if (ingredients.length === 0) {
     await bot.sendMessage(
       chatId,
-      '📭 У вас нет добавленных ингредиентов!\n\nДобавьте ингредиенты командой /add\\_ingredient, чтобы найти коктейли.',
+      '📭 У вас нет добавленных ингредиентов!\n\nДобавьте ингредиенты командой /add_ingredient, чтобы найти коктейли.',
       {
-        parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' }],
-          ],
-        },
+            [{ text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' }]
+          ]
+        }
       }
     );
     return;
@@ -161,11 +186,11 @@ export const sendFindCocktails = async (
 
   const searchingMsg = await bot.sendMessage(
     chatId,
-    `🔍 Ищу коктейли с вашими ингредиентами...\n\n${ingredients.join(', ')}`
+    `🔍 Ищу коктейли с вашими ингредиентами...\n\n${ingredients.map(i => translateToRussian(i)).join(', ')}`
   );
 
   try {
-    const cocktails = inshakerService.findByIngredients(ingredients);
+    const cocktails = await cocktailService.findCocktailsByIngredients(ingredients);
     userCocktails.set(userId, cocktails);
 
     await bot.deleteMessage(chatId, searchingMsg.message_id);
@@ -177,30 +202,28 @@ export const sendFindCocktails = async (
         {
           reply_markup: {
             inline_keyboard: [
-              [{ text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' }],
-            ],
-          },
+              [{ text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' }]
+            ]
+          }
         }
       );
       return;
     }
 
-    const message = formatInshakerCocktailsList(cocktails);
+    const message = formatCocktailsList(cocktails);
     const keyboard = {
       inline_keyboard: [
-        ...cocktails.slice(0, config.maxCocktailsToShow).map((cocktail, index) => [
-          {
-            text: `${index + 1}. ${cocktail.name} (${cocktail.matchPercentage}%)`,
-            callback_data: `show_recipe_${index}`,
-          },
-        ]),
-        [{ text: '◀️ Назад', callback_data: 'back_to_menu' }],
-      ],
+        ...cocktails.slice(0, config.maxCocktailsToShow).map((cocktail, index) => [{
+          text: `${index + 1}. ${cocktail.strDrink} (${cocktail.matchPercentage}%)`,
+          callback_data: `show_recipe_${index}`
+        }]),
+        [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
+      ]
     };
 
     await bot.sendMessage(chatId, message, {
       parse_mode: 'Markdown',
-      reply_markup: keyboard,
+      reply_markup: keyboard
     });
   } catch (error) {
     console.error('Ошибка поиска коктейлей:', error);
@@ -213,31 +236,23 @@ export const sendFindCocktails = async (
 };
 
 /** Предлагает пользователю ввести название коктейля */
-export const sendSearchByName = async (
-  bot: TelegramBot,
-  chatId: number,
-  userId: number
-) => {
+export const sendSearchByName = async (bot: TelegramBot, chatId: number, userId: number) => {
   console.log(`[SEARCH_BY_NAME] userId=${userId} chatId=${chatId}`);
   userStates.set(userId, 'awaiting_cocktail_name');
 
   await bot.sendMessage(
     chatId,
-    '🔎 *Поиск коктейля по названию*\n\nВведите название коктейля (например: Мохито, Негрони, Маргарита):',
+    '🔎 *Поиск коктейля по названию*\n\nВведите название коктейля (например: Mojito, Margarita, Cosmopolitan):',
     { parse_mode: 'Markdown' }
   );
 };
 
-export const handleSearch = (
-  bot: TelegramBot,
-  storage: StorageService,
-  inshakerService: InshakerService
-) => {
+export const handleSearch = (bot: TelegramBot, storage: StorageService, cocktailService: CocktailService, translationService: TranslationService) => {
   bot.onText(/\/find_cocktails/, async (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from?.id;
     if (!userId) return;
-    await sendFindCocktails(bot, chatId, userId, storage, inshakerService);
+    await sendFindCocktails(bot, chatId, userId, storage, cocktailService);
   });
 
   bot.on('callback_query', async (query) => {
@@ -262,7 +277,7 @@ export const handleSearch = (
       // --- Кнопка «Найти коктейли» — вызываем функцию напрямую ---
       if (data === 'find_cocktails') {
         await bot.answerCallbackQuery(query.id);
-        await sendFindCocktails(bot, chatId, userId, storage, inshakerService);
+        await sendFindCocktails(bot, chatId, userId, storage, cocktailService);
         return;
       }
 
@@ -280,7 +295,7 @@ export const handleSearch = (
 
         if (!cocktails || !cocktails[index]) {
           await bot.answerCallbackQuery(query.id, {
-            text: '❌ Коктейль не найден. Выполните поиск заново.',
+            text: '❌ Коктейль не найден. Выполните поиск заново.'
           });
           return;
         }
@@ -292,35 +307,31 @@ export const handleSearch = (
           inline_keyboard: [
             [
               { text: '◀️ К списку', callback_data: 'find_cocktails' },
-              { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' },
-            ],
-          ],
+              { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }
+            ]
+          ]
         };
 
-        const recipeText = formatInshakerRecipeWithMatch(cocktail);
+        const recipeText = await formatCocktailRecipe(cocktail, translationService);
 
         try {
-          if (cocktail.image) {
-            const imageUrl = cocktail.image.startsWith('http')
-              ? cocktail.image
-              : `https://ru.inshaker.com${cocktail.image}`;
-
-            await bot.sendPhoto(chatId, imageUrl, {
+          if (cocktail.strDrinkThumb) {
+            await bot.sendPhoto(chatId, cocktail.strDrinkThumb, {
               caption: recipeText,
               parse_mode: 'Markdown',
-              reply_markup: recipeMarkup,
+              reply_markup: recipeMarkup
             });
           } else {
             await bot.sendMessage(chatId, recipeText, {
               parse_mode: 'Markdown',
-              reply_markup: recipeMarkup,
+              reply_markup: recipeMarkup
             });
           }
         } catch (error) {
           console.error('Ошибка отправки рецепта:', error);
           await bot.sendMessage(chatId, recipeText, {
             parse_mode: 'Markdown',
-            reply_markup: recipeMarkup,
+            reply_markup: recipeMarkup
           });
         }
         return;
@@ -333,7 +344,7 @@ export const handleSearch = (
 
         if (!cocktails || !cocktails[index]) {
           await bot.answerCallbackQuery(query.id, {
-            text: '❌ Коктейль не найден. Выполните поиск заново.',
+            text: '❌ Коктейль не найден. Выполните поиск заново.'
           });
           return;
         }
@@ -344,13 +355,13 @@ export const handleSearch = (
           inline_keyboard: [
             [
               { text: '◀️ К списку', callback_data: 'back_to_name_list' },
-              { text: '🔎 Новый поиск', callback_data: 'search_by_name' },
+              { text: '🔎 Новый поиск', callback_data: 'search_by_name' }
             ],
-            [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
-          ],
+            [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }]
+          ]
         };
 
-        await sendNameRecipe(bot, chatId, cocktails[index], replyMarkup);
+        await sendNameRecipe(bot, chatId, cocktails[index], cocktailService, translationService, replyMarkup);
         return;
       }
 
@@ -359,13 +370,7 @@ export const handleSearch = (
         await bot.answerCallbackQuery(query.id);
         const cocktails = userNameSearchResults.get(userId);
         if (cocktails && cocktails.length > 1) {
-          await displayNameSearchResults(
-            bot,
-            chatId,
-            userId,
-            cocktails,
-            inshakerService
-          );
+          await displayNameSearchResults(bot, chatId, userId, cocktails, cocktailService, translationService);
         } else {
           await sendSearchByName(bot, chatId, userId);
         }
@@ -375,7 +380,7 @@ export const handleSearch = (
       console.error(`[CALLBACK_ERROR] userId=${userId} data="${data}"`, error);
       try {
         await bot.answerCallbackQuery(query.id, {
-          text: '❌ Произошла ошибка',
+          text: '❌ Произошла ошибка'
         });
       } catch (e) {
         console.error('[CALLBACK_ERROR] Не удалось вызвать answerCallbackQuery:', e);
@@ -419,9 +424,13 @@ export const handleSearch = (
     );
 
     try {
-      const cocktails = inshakerService.searchByName(cocktailName);
+      // Переводим название с русского на английский, если нужно
+      const englishName = await translationService.translateToEnglish(cocktailName);
+      console.log(`[NAME_SEARCH] Translated "${cocktailName}" -> "${englishName}"`);
+
+      const cocktails = await cocktailService.searchByName(englishName);
       await bot.deleteMessage(chatId, searchMsg.message_id);
-      await displayNameSearchResults(bot, chatId, userId, cocktails, inshakerService);
+      await displayNameSearchResults(bot, chatId, userId, cocktails, cocktailService, translationService);
     } catch (error) {
       console.error(`[NAME_SEARCH_ERROR] userId=${userId} name="${cocktailName}"`, error);
       await bot.deleteMessage(chatId, searchMsg.message_id);
@@ -432,9 +441,9 @@ export const handleSearch = (
           reply_markup: {
             inline_keyboard: [
               [{ text: '🔎 Попробовать снова', callback_data: 'search_by_name' }],
-              [{ text: '◀️ Назад', callback_data: 'back_to_menu' }],
-            ],
-          },
+              [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
+            ]
+          }
         }
       );
     }
