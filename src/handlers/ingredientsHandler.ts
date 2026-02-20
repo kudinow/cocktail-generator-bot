@@ -13,7 +13,7 @@ const buildIngredientKeyboard = (userIngredients: string[]) => {
 
   return {
     inline_keyboard: [
-      ...popularIngredients.slice(0, 18).reduce((rows: any[], ing, index) => {
+      ...popularIngredients.reduce((rows: any[], ing, index) => {
         if (index % 3 === 0) rows.push([]);
         const isSelected = userIngredientsLower.includes(ing.ru.toLowerCase());
         rows[rows.length - 1].push({
@@ -25,6 +25,7 @@ const buildIngredientKeyboard = (userIngredients: string[]) => {
       [{ text: '✍️ Ввести свой ингредиент', callback_data: 'add_custom_ingredient' }],
       [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
       [{ text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }],
+      [{ text: '🔎 Найти по названию', callback_data: 'search_by_name' }],
       [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
     ]
   };

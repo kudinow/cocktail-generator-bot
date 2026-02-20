@@ -54,6 +54,8 @@ class StorageService {
       username,
       ingredients: [],
       lastActivity: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      searchCount: 0,
     };
     this.users.set(userId, user);
     this.saveData();
@@ -105,6 +107,17 @@ class StorageService {
   getIngredients(userId: number): string[] {
     const user = this.getUser(userId);
     return user ? user.ingredients : [];
+  }
+
+  incrementSearchCount(userId: number): void {
+    const user = this.getUser(userId);
+    if (!user) return;
+    const count = (user.searchCount ?? 0) + 1;
+    this.updateUser(userId, { searchCount: count });
+  }
+
+  getAllUsers(): UserData[] {
+    return Array.from(this.users.values());
   }
 }
 

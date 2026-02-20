@@ -276,6 +276,7 @@ export const sendFindCocktails = async (
     try {
       // Ингредиенты уже на русском языке в storage, используем напрямую
       const cocktails = inshakerService.findByIngredients(ingredients);
+      storage.incrementSearchCount(userId);
       userCocktails.set(userId, cocktails);
       userIngredientsOffset.set(userId, 0);
 
@@ -719,6 +720,7 @@ export const handleSearch = (
 
       try {
         const cocktails = inshakerService.searchByName(cocktailName);
+        storage.incrementSearchCount(userId);
         await bot.deleteMessage(chatId, searchMsg.message_id);
         await displayNameSearchResults(bot, chatId, userId, cocktails, inshakerService);
       } catch (error) {
@@ -766,6 +768,7 @@ export const handleSearch = (
       try {
         // Ищем коктейли по одному ингредиенту
         const cocktails = inshakerService.findByIngredients([ingredientName]);
+        storage.incrementSearchCount(userId);
         await bot.deleteMessage(chatId, searchMsg.message_id);
         await displayIngredientSearchResults(bot, chatId, userId, cocktails);
       } catch (error) {

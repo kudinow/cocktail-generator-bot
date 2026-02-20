@@ -8,7 +8,12 @@
     "build": "tsc",
     "start": "node dist/bot.js",
     "type-check": "tsc --noEmit",
-    "parse:inshaker": "ts-node scripts/parseInshaker.ts"
+    "parse:inshaker": "ts-node scripts/parseInshaker.ts",
+    "images:download": "ts-node scripts/downloadCocktailImages.ts",
+    "web:dev": "cd web && npm run dev",
+    "web:build": "cd web && npm run build",
+    "web:start": "cd web && npm run start",
+    "dashboard": "ts-node src/dashboardServer.ts"
   },
   "keywords": [
     "telegram",

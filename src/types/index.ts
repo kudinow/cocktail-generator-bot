@@ -3,6 +3,8 @@ export interface UserData {
   username?: string;
   ingredients: string[];
   lastActivity: string;
+  createdAt?: string;    // дата первого запуска бота
+  searchCount?: number;  // всего выполнено поисков
 }
 
 // ============================================================
