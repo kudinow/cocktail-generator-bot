@@ -6,57 +6,83 @@ import { InshakerRecipe, InshakerIngredient } from '../src/types';
 
 const BASE_URL = 'https://ru.inshaker.com';
 const OUTPUT_FILE = path.join(__dirname, '../data/inshaker_recipes.json');
+const PARSED_IDS_FILE = path.join(__dirname, '../data/parsed_ids.json');
+const FAILED_IDS_FILE = path.join(__dirname, '../data/failed_ids.json');
+const TO_PARSE_FILE = path.join(__dirname, '../data/to_parse.json');
 const DELAY_MS = 1000; // Задержка между запросами (1 сек)
 
-// Список популярных коктейлей (ID из URL)
-const POPULAR_COCKTAILS = [
-  // Первые 25 (уже спарсенные)
-  39,   // Маргарита
-  55,   // Негрони
-  1098, // Aperol Spritz
-  48,   // Ржавый гвоздь
-  43,   // Ураган
-  123,  // Ром коллинз
-  40,   // Мартинез
-  52,   // Отвертка
-  38,   // Манхэттен
-  47,   // Сазерак
-  44,   // Том коллинз
-  1,    // Восхитительный
-  56,   // Мятный джулеп
-  41,   // Мимоза
-  46,   // Сингапурский слинг
-  42,   // Френч 75
-  49,   // Рамос джин физ
-  50,   // Пунш плантатора
-  51,   // Писко пунш
-  53,   // Олд фешен
-  54,   // Никербокер
-  57,   // Мохито
-  58,   // Московский мул
-  59,   // Сайдкар
-  60,   // Писко сауэр
+/** Интерфейс для записи о неудачной попытке парсинга */
+interface FailedParseAttempt {
+  id: number;
+  error: string;
+  errorCode?: number;
+  attemptedAt: string;
+}
 
-  // Добавляем ещё 75 популярных коктейлей
-  61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
-  71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-  81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-  91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
-  101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-  111, 112, 113, 114, 115, 116, 117, 118, 119, 120,
-  121, 122, 124, 125, 126, 127, 128, 129, 130,
-  131, 132, 133, 134, 135, 136, 137, 138, 139, 140,
-  141, 142, 143, 144, 145,
+/** Извлекает ID коктейля из ссылки или возвращает число */
+function extractCocktailId(input: string | number): number | null {
+  if (typeof input === 'number') {
+    return input;
+  }
 
-  // добавляю порнстар мартини
-  724
-];
+  // Проверяем, является ли строка числом
+  const numMatch = input.match(/^\d+$/);
+  if (numMatch) {
+    return parseInt(input, 10);
+  }
+
+  // Извлекаем ID из ссылки: https://ru.inshaker.com/cocktails/724
+  const urlMatch = input.match(/\/cocktails\/(\d+)/);
+  if (urlMatch) {
+    return parseInt(urlMatch[1], 10);
+  }
+
+  return null;
+}
+
+/** Расширяет диапазон или возвращает одиночный ID */
+function expandRange(input: string | number): number[] {
+  if (typeof input === 'number') {
+    return [input];
+  }
+
+  // Проверяем диапазон: "100-150"
+  const rangeMatch = input.match(/^(\d+)-(\d+)$/);
+  if (rangeMatch) {
+    const start = parseInt(rangeMatch[1], 10);
+    const end = parseInt(rangeMatch[2], 10);
+
+    if (start > end) {
+      console.warn(`⚠️ Некорректный диапазон: ${input} (начало больше конца)`);
+      return [];
+    }
+
+    // Создаём массив чисел от start до end
+    const range: number[] = [];
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+    return range;
+  }
+
+  // Если не диапазон, пытаемся извлечь одиночный ID
+  const id = extractCocktailId(input);
+  return id !== null ? [id] : [];
+}
 
 // Утилита для задержки
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+/** Результат парсинга рецепта */
+interface ParseResult {
+  success: boolean;
+  recipe?: InshakerRecipe;
+  error?: string;
+  errorCode?: number;
+}
+
 // Парсинг одного рецепта
-async function parseRecipe(cocktailId: number): Promise<InshakerRecipe | null> {
+async function parseRecipe(cocktailId: number): Promise<ParseResult> {
   try {
     console.log(`Парсинг коктейля ID ${cocktailId}...`);
 
@@ -72,16 +98,36 @@ async function parseRecipe(cocktailId: number): Promise<InshakerRecipe | null> {
     // Попытка извлечь JSON-LD данные
     const jsonLdScript = $('script[type="application/ld+json"]').html();
 
+    let recipe: InshakerRecipe | null;
     if (jsonLdScript) {
-      return parseFromJsonLd(cocktailId, jsonLdScript, $);
+      recipe = parseFromJsonLd(cocktailId, jsonLdScript, $);
     } else {
       // Fallback: парсинг из HTML
-      return parseFromHtml(cocktailId, $);
+      recipe = parseFromHtml(cocktailId, $);
+    }
+
+    if (recipe) {
+      return { success: true, recipe };
+    } else {
+      return {
+        success: false,
+        error: 'Не удалось извлечь данные из HTML/JSON-LD',
+      };
     }
 
   } catch (error: any) {
-    console.error(`Ошибка парсинга коктейля ${cocktailId}:`, error.message);
-    return null;
+    const errorCode = error.response?.status;
+    const errorMessage = error.response?.status
+      ? `Request failed with status code ${error.response.status}`
+      : error.message;
+
+    console.error(`❌ Ошибка парсинга коктейля ${cocktailId}:`, errorMessage);
+
+    return {
+      success: false,
+      error: errorMessage,
+      errorCode,
+    };
   }
 }
 
@@ -218,68 +264,157 @@ function parseFromHtml(cocktailId: number, $: any): InshakerRecipe | null {
 
 // Основная функция
 async function main() {
-  // Загружаем существующие рецепты (если есть)
+  console.log('🚀 Запуск парсера Inshaker с системой таблиц\n');
+
+  // 1. Загружаем существующие рецепты
   let existingRecipes: InshakerRecipe[] = [];
   if (fs.existsSync(OUTPUT_FILE)) {
     try {
       const fileContent = fs.readFileSync(OUTPUT_FILE, 'utf-8');
       existingRecipes = JSON.parse(fileContent);
-      console.log(`📚 Загружено ${existingRecipes.length} существующих рецептов`);
+      console.log(`📚 Загружено ${existingRecipes.length} рецептов из базы`);
     } catch (error) {
       console.warn('⚠️ Не удалось загрузить существующие рецепты, создаём новый файл');
     }
   }
 
-  // Находим ID, которые уже есть в базе
-  const existingIds = new Set(existingRecipes.map(r => r.id));
-  const newIds = POPULAR_COCKTAILS.filter(id => !existingIds.has(id));
+  // 2. Загружаем таблицы
+  let parsedIds: number[] = [];
+  let failedIds: FailedParseAttempt[] = [];
+  let toParse: (string | number)[] = [];
 
-  if (newIds.length === 0) {
-    console.log('✅ Все коктейли уже в базе! Новых рецептов для парсинга нет.');
+  if (fs.existsSync(PARSED_IDS_FILE)) {
+    parsedIds = JSON.parse(fs.readFileSync(PARSED_IDS_FILE, 'utf-8'));
+  }
+  if (fs.existsSync(FAILED_IDS_FILE)) {
+    failedIds = JSON.parse(fs.readFileSync(FAILED_IDS_FILE, 'utf-8'));
+  }
+  if (fs.existsSync(TO_PARSE_FILE)) {
+    toParse = JSON.parse(fs.readFileSync(TO_PARSE_FILE, 'utf-8'));
+  }
+
+  console.log(`📊 Статус таблиц:`);
+  console.log(`   ✅ Успешно спарсено: ${parsedIds.length} ID`);
+  console.log(`   ❌ Не удалось спарсить: ${failedIds.length} ID`);
+  console.log(`   ⏳ В очереди на парсинг: ${toParse.length} ID\n`);
+
+  if (toParse.length === 0) {
+    console.log('✅ Очередь на парсинг пуста!');
+    console.log(`\n💡 Добавьте ID или ссылки в файл: ${TO_PARSE_FILE}`);
     return;
   }
 
-  console.log(`🍸 Найдено ${newIds.length} новых коктейлей для парсинга:\n`);
-  console.log(`   IDs: ${newIds.join(', ')}\n`);
+  // 3. Обрабатываем ID из очереди (с поддержкой диапазонов)
+  const parsedIdsSet = new Set(parsedIds);
+  const failedIdsSet = new Set(failedIds.map(f => f.id));
+
+  const idsToProcess: number[] = [];
+  const skippedIds: { id: number; reason: string }[] = [];
+
+  for (const item of toParse) {
+    // Расширяем диапазоны (например, "100-105" → [100, 101, 102, 103, 104, 105])
+    const expandedIds = expandRange(item);
+
+    if (expandedIds.length === 0) {
+      console.warn(`⚠️ Не удалось извлечь ID из: ${item}`);
+      continue;
+    }
+
+    // Обрабатываем каждый ID из расширенного диапазона
+    for (const cocktailId of expandedIds) {
+      if (parsedIdsSet.has(cocktailId)) {
+        skippedIds.push({ id: cocktailId, reason: 'уже спарсено' });
+        continue;
+      }
+
+      if (failedIdsSet.has(cocktailId)) {
+        skippedIds.push({ id: cocktailId, reason: 'в чёрном списке' });
+        continue;
+      }
+
+      idsToProcess.push(cocktailId);
+    }
+  }
+
+  if (skippedIds.length > 0) {
+    console.log(`⏭️  Пропущено ${skippedIds.length} ID:`);
+    skippedIds.forEach(({ id, reason }) => {
+      console.log(`   - ID ${id} (${reason})`);
+    });
+    console.log('');
+  }
+
+  if (idsToProcess.length === 0) {
+    console.log('✅ Нет новых ID для парсинга!');
+    // Очищаем очередь от обработанных
+    fs.writeFileSync(TO_PARSE_FILE, JSON.stringify([], null, 2), 'utf-8');
+    return;
+  }
+
+  console.log(`🍸 Начинаем парсинг ${idsToProcess.length} новых коктейлей:\n`);
 
   const newRecipes: InshakerRecipe[] = [];
+  const newParsedIds: number[] = [];
+  const newFailedIds: FailedParseAttempt[] = [];
 
-  for (let i = 0; i < newIds.length; i++) {
-    const cocktailId = newIds[i];
-    const recipe = await parseRecipe(cocktailId);
+  // 4. Парсим каждый ID
+  for (let i = 0; i < idsToProcess.length; i++) {
+    const cocktailId = idsToProcess[i];
+    const result = await parseRecipe(cocktailId);
 
-    if (recipe) {
-      newRecipes.push(recipe);
-      console.log(`✅ Успешно: ${recipe.name} (${recipe.ingredients.length} ингредиентов)`);
+    if (result.success && result.recipe) {
+      newRecipes.push(result.recipe);
+      newParsedIds.push(cocktailId);
+      console.log(`✅ Успешно: ${result.recipe.name} (${result.recipe.ingredients.length} ингредиентов)`);
     } else {
-      console.log(`❌ Не удалось спарсить ID ${cocktailId}`);
+      newFailedIds.push({
+        id: cocktailId,
+        error: result.error || 'Неизвестная ошибка',
+        errorCode: result.errorCode,
+        attemptedAt: new Date().toISOString(),
+      });
+      console.log(`❌ Не удалось спарсить ID ${cocktailId}: ${result.error}`);
     }
 
     // Задержка между запросами
-    if (i < newIds.length - 1) {
+    if (i < idsToProcess.length - 1) {
       await delay(DELAY_MS);
     }
   }
 
-  // Объединяем существующие и новые рецепты
-  const allRecipes = [...existingRecipes, ...newRecipes];
-
-  // Сохранение в JSON
-  const outputDir = path.dirname(OUTPUT_FILE);
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  // 5. Обновляем базу рецептов
+  if (newRecipes.length > 0) {
+    const allRecipes = [...existingRecipes, ...newRecipes];
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allRecipes, null, 2), 'utf-8');
   }
 
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allRecipes, null, 2), 'utf-8');
+  // 6. Обновляем таблицы
+  const updatedParsedIds = [...parsedIds, ...newParsedIds];
+  const updatedFailedIds = [...failedIds, ...newFailedIds];
 
-  console.log(`\n✨ Готово! Добавлено ${newRecipes.length} новых рецептов.`);
-  console.log(`📁 Сохранено в: ${OUTPUT_FILE}`);
-  console.log(`\nОбщая статистика:`);
-  console.log(`  - Всего рецептов: ${allRecipes.length}`);
-  console.log(`  - Алкогольных: ${allRecipes.filter(r => r.alcoholic).length}`);
-  console.log(`  - Безалкогольных: ${allRecipes.filter(r => !r.alcoholic).length}`);
-  const avgRating = allRecipes.reduce((sum, r) => sum + (r.rating || 0), 0) / allRecipes.length;
-  console.log(`  - Средний рейтинг: ${avgRating.toFixed(2)}`);
+  fs.writeFileSync(PARSED_IDS_FILE, JSON.stringify(updatedParsedIds, null, 2), 'utf-8');
+  fs.writeFileSync(FAILED_IDS_FILE, JSON.stringify(updatedFailedIds, null, 2), 'utf-8');
+  fs.writeFileSync(TO_PARSE_FILE, JSON.stringify([], null, 2), 'utf-8'); // Очищаем очередь
+
+  // 7. Итоговая статистика
+  console.log(`\n✨ Парсинг завершён!`);
+  console.log(`\n📊 Результаты:`);
+  console.log(`   ✅ Успешно спарсено: ${newParsedIds.length} рецептов`);
+  console.log(`   ❌ Ошибки парсинга: ${newFailedIds.length} ID`);
+  console.log(`   ⏭️  Пропущено: ${skippedIds.length} ID`);
+
+  if (newRecipes.length > 0) {
+    console.log(`\n📁 База рецептов обновлена: ${OUTPUT_FILE}`);
+    const totalRecipes = existingRecipes.length + newRecipes.length;
+    console.log(`   - Всего рецептов: ${totalRecipes}`);
+    console.log(`   - Алкогольных: ${existingRecipes.filter(r => r.alcoholic).length + newRecipes.filter(r => r.alcoholic).length}`);
+    console.log(`   - Безалкогольных: ${existingRecipes.filter(r => !r.alcoholic).length + newRecipes.filter(r => !r.alcoholic).length}`);
+  }
+
+  console.log(`\n📋 Таблицы обновлены:`);
+  console.log(`   - ${PARSED_IDS_FILE} (${updatedParsedIds.length} ID)`);
+  console.log(`   - ${FAILED_IDS_FILE} (${updatedFailedIds.length} ID)`);
+  console.log(`   - ${TO_PARSE_FILE} (очищена)`);
 }
 
 // Запуск

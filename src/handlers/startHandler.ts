@@ -35,7 +35,8 @@ export const sendStart = async (bot: TelegramBot, chatId: number, userId: number
         { text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }
       ],
       [
-        { text: '🔎 Найти по названию', callback_data: 'search_by_name' }
+        { text: '🔎 Найти по названию', callback_data: 'search_by_name' },
+        { text: '🍹 Поиск по ингредиенту', callback_data: 'search_by_ingredient' }
       ]
     ]
   };
