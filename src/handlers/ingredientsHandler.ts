@@ -23,10 +23,8 @@ const buildIngredientKeyboard = (userIngredients: string[]) => {
         return rows;
       }, []),
       [{ text: '✍️ Ввести свой ингредиент', callback_data: 'add_custom_ingredient' }],
-      [
-        { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' },
-        { text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }
-      ],
+      [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
+      [{ text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }],
       [{ text: '◀️ Назад', callback_data: 'back_to_menu' }]
     ]
   };
@@ -96,10 +94,8 @@ export const sendMyIngredients = async (bot: TelegramBot, chatId: number, userId
         text: `❌ ${ing}`,
         callback_data: `remove_ing_${ing}`
       }]),
-      [
-        { text: '➕ Добавить еще', callback_data: 'add_ingredient' },
-        { text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }
-      ],
+      [{ text: '➕ Добавить еще', callback_data: 'add_ingredient' }],
+      [{ text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }],
       [{ text: '🗑 Очистить все', callback_data: 'clear_all' }]
     ]
   };
@@ -320,10 +316,8 @@ export const handleIngredients = (bot: TelegramBot, storage: StorageService) => 
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [
-                { text: '➕ Добавить еще', callback_data: 'add_ingredient' },
-                { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }
-              ],
+              [{ text: '➕ Добавить еще', callback_data: 'add_ingredient' }],
+              [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
               [{ text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }]
             ]
           }

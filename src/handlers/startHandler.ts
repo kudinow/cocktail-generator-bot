@@ -3,7 +3,11 @@ import StorageService from '../services/storageService';
 
 export const sendStart = async (bot: TelegramBot, chatId: number, userId: number, storage: StorageService, username?: string) => {
   console.log(`[START] userId=${userId} chatId=${chatId} username=${username}`);
-  storage.createUser(userId, username);
+
+  // Создаём пользователя только если его ещё нет в базе
+  if (!storage.getUser(userId)) {
+    storage.createUser(userId, username);
+  }
 
   const welcomeMessage = `
 🍸 *Добро пожаловать в Cocktail Bot!*
@@ -27,17 +31,11 @@ export const sendStart = async (bot: TelegramBot, chatId: number, userId: number
 
   const keyboard = {
     inline_keyboard: [
-      [
-        { text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' },
-        { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }
-      ],
-      [
-        { text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }
-      ],
-      [
-        { text: '🔎 Найти по названию', callback_data: 'search_by_name' },
-        { text: '🍹 Поиск по ингредиенту', callback_data: 'search_by_ingredient' }
-      ]
+      [{ text: '➕ Добавить ингредиент', callback_data: 'add_ingredient' }],
+      [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
+      [{ text: '🔍 Найти коктейли', callback_data: 'find_cocktails' }],
+      [{ text: '🔎 Найти по названию', callback_data: 'search_by_name' }],
+      [{ text: '🍹 Поиск по ингредиенту', callback_data: 'search_by_ingredient' }]
     ]
   };
 

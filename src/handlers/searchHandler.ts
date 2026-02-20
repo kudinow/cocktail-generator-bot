@@ -90,10 +90,8 @@ const displayNameSearchResults = async (
   if (cocktails.length === 1) {
     const replyMarkup: TelegramBot.InlineKeyboardMarkup = {
       inline_keyboard: [
-        [
-          { text: '🔎 Найти другой', callback_data: 'search_by_name' },
-          { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' },
-        ],
+        [{ text: '🔎 Найти другой', callback_data: 'search_by_name' }],
+        [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
         [{ text: '◀️ Назад', callback_data: 'back_to_menu' }],
       ],
     };
@@ -143,10 +141,8 @@ const displayNameSearchResults = async (
     ]);
   }
 
-  keyboard.push([
-    { text: '🔎 Новый поиск', callback_data: 'search_by_name' },
-    { text: '◀️ Назад', callback_data: 'back_to_menu' },
-  ]);
+  keyboard.push([{ text: '🔎 Новый поиск', callback_data: 'search_by_name' }]);
+  keyboard.push([{ text: '◀️ Назад', callback_data: 'back_to_menu' }]);
 
   await bot.sendMessage(chatId, message, {
     parse_mode: 'Markdown',
@@ -528,10 +524,8 @@ export const handleSearch = (
 
         const recipeMarkup = {
           inline_keyboard: [
-            [
-              { text: '◀️ К списку', callback_data: 'find_cocktails' },
-              { text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' },
-            ],
+            [{ text: '◀️ К списку', callback_data: 'find_cocktails' }],
+            [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
           ],
         };
 
@@ -580,10 +574,8 @@ export const handleSearch = (
 
         const replyMarkup: TelegramBot.InlineKeyboardMarkup = {
           inline_keyboard: [
-            [
-              { text: '◀️ К списку', callback_data: 'back_to_name_list' },
-              { text: '🔎 Новый поиск', callback_data: 'search_by_name' },
-            ],
+            [{ text: '◀️ К списку', callback_data: 'back_to_name_list' }],
+            [{ text: '🔎 Новый поиск', callback_data: 'search_by_name' }],
             [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
           ],
         };
@@ -609,10 +601,8 @@ export const handleSearch = (
 
         const recipeMarkup = {
           inline_keyboard: [
-            [
-              { text: '◀️ К списку', callback_data: 'back_to_ingredient_list' },
-              { text: '🍹 Новый поиск', callback_data: 'search_by_ingredient' },
-            ],
+            [{ text: '◀️ К списку', callback_data: 'back_to_ingredient_list' }],
+            [{ text: '🍹 Новый поиск', callback_data: 'search_by_ingredient' }],
             [{ text: '📋 Мои ингредиенты', callback_data: 'my_ingredients' }],
           ],
         };

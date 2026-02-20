@@ -1,1 +1,437 @@
-[]
+[
+  {
+    "id": 3,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:00:15.842Z"
+  },
+  {
+    "id": 62,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:28.643Z"
+  },
+  {
+    "id": 79,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:30.196Z"
+  },
+  {
+    "id": 85,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:31.884Z"
+  },
+  {
+    "id": 87,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:33.445Z"
+  },
+  {
+    "id": 91,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:35.253Z"
+  },
+  {
+    "id": 92,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:37.740Z"
+  },
+  {
+    "id": 99,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:01:40.341Z"
+  },
+  {
+    "id": 110,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:28.569Z"
+  },
+  {
+    "id": 115,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:30.035Z"
+  },
+  {
+    "id": 124,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:31.485Z"
+  },
+  {
+    "id": 126,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:32.930Z"
+  },
+  {
+    "id": 127,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:34.384Z"
+  },
+  {
+    "id": 128,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:35.825Z"
+  },
+  {
+    "id": 129,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:37.323Z"
+  },
+  {
+    "id": 132,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:38.768Z"
+  },
+  {
+    "id": 134,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:40.229Z"
+  },
+  {
+    "id": 143,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:41.677Z"
+  },
+  {
+    "id": 145,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:43.123Z"
+  },
+  {
+    "id": 154,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:57.063Z"
+  },
+  {
+    "id": 155,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:02:58.616Z"
+  },
+  {
+    "id": 166,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:08.341Z"
+  },
+  {
+    "id": 168,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:11.529Z"
+  },
+  {
+    "id": 169,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:12.988Z"
+  },
+  {
+    "id": 171,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:16.203Z"
+  },
+  {
+    "id": 173,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:19.557Z"
+  },
+  {
+    "id": 176,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:24.946Z"
+  },
+  {
+    "id": 186,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:03:43.760Z"
+  },
+  {
+    "id": 197,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:04:06.411Z"
+  },
+  {
+    "id": 203,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:05:06.948Z"
+  },
+  {
+    "id": 209,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:05:17.886Z"
+  },
+  {
+    "id": 221,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:05:38.706Z"
+  },
+  {
+    "id": 239,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:11.561Z"
+  },
+  {
+    "id": 241,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:14.852Z"
+  },
+  {
+    "id": 246,
+    "error": "Не удалось извлечь данные из HTML/JSON-LD",
+    "attemptedAt": "2026-02-20T09:06:23.442Z"
+  },
+  {
+    "id": 250,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:30.565Z"
+  },
+  {
+    "id": 253,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:35.717Z"
+  },
+  {
+    "id": 258,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:44.594Z"
+  },
+  {
+    "id": 260,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:06:47.978Z"
+  },
+  {
+    "id": 270,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:07:07.498Z"
+  },
+  {
+    "id": 289,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:07:40.531Z"
+  },
+  {
+    "id": 299,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:07:57.959Z"
+  },
+  {
+    "id": 305,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:08.124Z"
+  },
+  {
+    "id": 307,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:11.260Z"
+  },
+  {
+    "id": 309,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:14.474Z"
+  },
+  {
+    "id": 315,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:24.715Z"
+  },
+  {
+    "id": 317,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:28.009Z"
+  },
+  {
+    "id": 319,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:08:31.408Z"
+  },
+  {
+    "id": 343,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:09:17.080Z"
+  },
+  {
+    "id": 351,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:09:30.627Z"
+  },
+  {
+    "id": 354,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:09:35.523Z"
+  },
+  {
+    "id": 356,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:09:38.705Z"
+  },
+  {
+    "id": 372,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:06.663Z"
+  },
+  {
+    "id": 375,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:11.673Z"
+  },
+  {
+    "id": 379,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:18.392Z"
+  },
+  {
+    "id": 384,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:26.866Z"
+  },
+  {
+    "id": 386,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:30.151Z"
+  },
+  {
+    "id": 395,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:10:45.460Z"
+  },
+  {
+    "id": 413,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:11:16.292Z"
+  },
+  {
+    "id": 417,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:11:22.911Z"
+  },
+  {
+    "id": 418,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:11:24.357Z"
+  },
+  {
+    "id": 424,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:11:34.320Z"
+  },
+  {
+    "id": 431,
+    "error": "Не удалось извлечь данные из HTML/JSON-LD",
+    "attemptedAt": "2026-02-20T09:11:46.414Z"
+  },
+  {
+    "id": 434,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:11:51.334Z"
+  },
+  {
+    "id": 448,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:12:15.256Z"
+  },
+  {
+    "id": 450,
+    "error": "Не удалось извлечь данные из HTML/JSON-LD",
+    "attemptedAt": "2026-02-20T09:12:18.901Z"
+  },
+  {
+    "id": 454,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:12:25.777Z"
+  },
+  {
+    "id": 461,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:12:37.766Z"
+  },
+  {
+    "id": 468,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:12:49.872Z"
+  },
+  {
+    "id": 472,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:12:56.689Z"
+  },
+  {
+    "id": 475,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:13:01.610Z"
+  },
+  {
+    "id": 478,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:13:06.560Z"
+  },
+  {
+    "id": 494,
+    "error": "Request failed with status code 404",
+    "errorCode": 404,
+    "attemptedAt": "2026-02-20T09:13:37.050Z"
+  }
+]
