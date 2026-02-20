@@ -14,7 +14,7 @@ const buildIngredientKeyboard = (userIngredients: string[]) => {
   return {
     inline_keyboard: [
       ...popularIngredients.reduce((rows: any[], ing, index) => {
-        if (index % 3 === 0) rows.push([]);
+        if (index % 2 === 0) rows.push([]);
         const isSelected = userIngredientsLower.includes(ing.ru.toLowerCase());
         rows[rows.length - 1].push({
           text: isSelected ? `✅ ${ing.ru}` : ing.ru,
