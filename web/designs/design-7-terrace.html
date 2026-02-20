@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlcoBerry — Summer Terrace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #FFFCF7;
+  --bg2:     #FFF8EE;
+  --coral:   #FF6040;
+  --coral-lt:#FFF0EC;
+  --coral-md:#FFBCAE;
+  --teal:    #00897B;
+  --teal-lt: #E0F5F2;
+  --yellow:  #FFD000;
+  --ink:     #1A1208;
+  --mid:     #6B5A42;
+  --light:   #BBA98C;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER ─── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 56px;
+  height: 68px;
+  position: sticky;
+  top: 0;
+  background: rgba(255,252,247,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid rgba(255,96,64,0.12);
+  z-index: 100;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.logo .alco { color: var(--coral); }
+.logo-badge {
+  margin-left: 8px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+nav { display: flex; align-items: center; gap: 6px; }
+nav a {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mid);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: all 0.2s;
+}
+nav a:hover { color: var(--coral); background: var(--coral-lt); }
+.nav-cta {
+  background: var(--coral) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(255,96,64,0.35);
+  transition: all 0.22s !important;
+}
+.nav-cta:hover { background: #E04830 !important; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,96,64,0.42) !important; }
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 68px);
+  max-height: 880px;
+}
+
+/* LEFT */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px 80px 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Organic shape background */
+.hero-blob {
+  position: absolute;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  pointer-events: none;
+}
+.blob-a {
+  width: 480px; height: 480px;
+  background: var(--coral-lt);
+  top: -160px; left: -160px;
+  opacity: 0.7;
+  animation: morphBlob 10s ease-in-out infinite;
+}
+.blob-b {
+  width: 200px; height: 200px;
+  background: var(--teal-lt);
+  bottom: 20px; right: 20px;
+  border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+  opacity: 0.8;
+  animation: morphBlob 8s 2s ease-in-out infinite reverse;
+}
+@keyframes morphBlob {
+  0%, 100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+  33% { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; }
+  66% { border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%; }
+}
+
+.hero-content { position: relative; z-index: 1; }
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-lt);
+  border: 1.5px solid rgba(0,137,123,0.2);
+  padding: 7px 16px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+}
+
+h1 {
+  font-size: clamp(38px, 4vw, 60px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+h1 .wave {
+  position: relative;
+  display: inline-block;
+  color: var(--coral);
+}
+h1 .wave::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--yellow);
+  border-radius: 3px;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+.hero-sub {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--mid);
+  line-height: 1.75;
+  margin-bottom: 44px;
+  max-width: 440px;
+}
+
+.hero-btns { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 44px; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--coral);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 16px 38px;
+  border-radius: 16px;
+  text-decoration: none;
+  letter-spacing: -0.2px;
+  transition: transform 0.22s, box-shadow 0.22s;
+  box-shadow: 0 4px 20px rgba(255,96,64,0.35), 0 -3px 0 rgba(0,0,0,0.15) inset;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(255,96,64,0.4), 0 -3px 0 rgba(0,0,0,0.15) inset; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teal);
+  text-decoration: none;
+  padding: 16px 28px;
+  border-radius: 16px;
+  background: var(--teal-lt);
+  border: 1.5px solid rgba(0,137,123,0.2);
+  transition: all 0.2s;
+}
+.btn-secondary:hover { background: #C8EDE9; border-color: rgba(0,137,123,0.4); }
+
+/* Rating + social proof */
+.social-proof {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sp-avatars { display: flex; }
+.sp-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2.5px solid var(--bg);
+  margin-left: -8px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--coral-lt);
+}
+.sp-avatar:first-child { margin-left: 0; }
+.sp-text { font-size: 13px; font-weight: 600; color: var(--mid); }
+.sp-text strong { color: var(--ink); }
+
+/* ─── HERO RIGHT ─── */
+.hero-right {
+  position: relative;
+  background: linear-gradient(155deg, #FFF4EC 0%, #FFE8D6 40%, #FFD6C2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Sun-like background circle */
+.sun-bg {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,208,0,0.25) 0%, rgba(255,160,80,0.08) 50%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Decorative rings */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,96,64,0.12);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ring1 { width: 320px; height: 320px; }
+.ring2 { width: 460px; height: 460px; }
+.ring3 { width: 600px; height: 600px; }
+
+/* ─── CSS COCKTAIL — APEROL SPRITZ STYLE ─── */
+.cocktail-scene {
+  position: relative;
+  width: 240px;
+  height: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Large wine glass shape */
+.glass-wrap {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 320px;
+}
+
+/* Glass bowl — wine glass shape */
+.glass-bowl {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 240px;
+}
+.glass-bowl-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 8px 8px / 8% 8% 100% 100%;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.7);
+  position: relative;
+  background: rgba(255,255,255,0.1);
+}
+
+/* Liquid */
+.liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90%;
+  background: linear-gradient(180deg,
+    rgba(255,120,40,0.75) 0%,
+    rgba(255,90,20,0.9) 40%,
+    rgba(220,60,0,1) 100%
+  );
+}
+.liquid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(to bottom, rgba(255,200,140,0.6), transparent);
+}
+
+/* Bubbles */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  animation: riseUp ease-in infinite;
+}
+.b1 { width: 6px; height: 6px; bottom: 20px; left: 40px; animation-duration: 2.2s; }
+.b2 { width: 4px; height: 4px; bottom: 30px; right: 50px; animation-duration: 1.8s; animation-delay: 0.4s; }
+.b3 { width: 5px; height: 5px; bottom: 10px; left: 80px; animation-duration: 2.6s; animation-delay: 0.9s; }
+.b4 { width: 3px; height: 3px; bottom: 40px; right: 30px; animation-duration: 2s; animation-delay: 1.3s; }
+@keyframes riseUp {
+  0% { transform: translateY(0); opacity: 0.7; }
+  100% { transform: translateY(-140px); opacity: 0; }
+}
+
+/* Orange slice garnish */
+.orange-slice {
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: conic-gradient(
+    #FF8C00 0deg 45deg, #FFA500 45deg 90deg,
+    #FF8C00 90deg 135deg, #FFA500 135deg 180deg,
+    #FF8C00 180deg 225deg, #FFA500 225deg 270deg,
+    #FF8C00 270deg 315deg, #FFA500 315deg 360deg
+  );
+  border: 4px solid rgba(255,255,255,0.9);
+  box-shadow: 0 4px 16px rgba(255,100,0,0.3);
+  z-index: 5;
+}
+.orange-slice::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,220,100,0.8);
+  border: 2px solid rgba(255,255,255,0.5);
+}
+
+/* Ice cubes (float) */
+.ice-o {
+  position: absolute;
+  background: rgba(255,255,255,0.5);
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.85);
+  box-shadow: inset 2px 2px 4px rgba(255,255,255,0.9);
+}
+.io1 { width: 40px; height: 36px; top: 30px; left: 25px; transform: rotate(15deg); }
+.io2 { width: 32px; height: 30px; top: 50px; right: 20px; transform: rotate(-8deg); }
+.io3 { width: 28px; height: 26px; top: 90px; left: 35px; transform: rotate(20deg); }
+
+/* Glass highlight */
+.g-highlight {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  width: 18px;
+  height: 60%;
+  background: linear-gradient(to right, rgba(255,255,255,0.45), transparent);
+  border-radius: 10px;
+}
+
+/* Condensation */
+.cond {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,160,80,0.35);
+}
+.cond1 { width: 5px; height: 9px; top: 80px; left: -4px; }
+.cond2 { width: 4px; height: 7px; top: 120px; right: -3px; }
+.cond3 { width: 6px; height: 10px; top: 160px; left: -5px; }
+
+/* Glass stem */
+.g-stem {
+  position: absolute;
+  bottom: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 60px;
+  background: linear-gradient(to right, rgba(255,255,255,0.6), rgba(255,220,180,0.4), rgba(255,255,255,0.5));
+  clip-path: polygon(30% 0%, 70% 0%, 80% 100%, 20% 100%);
+}
+.g-base {
+  position: absolute;
+  bottom: -62px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+}
+
+/* Cocktail shadow */
+.c-shadow {
+  position: absolute;
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 20px;
+  background: radial-gradient(ellipse, rgba(180,80,20,0.2) 0%, transparent 70%);
+  filter: blur(4px);
+}
+
+/* Sparkle stars */
+.sparkle {
+  position: absolute;
+  color: var(--yellow);
+  font-size: 18px;
+  animation: twinkleS ease-in-out infinite;
+}
+.s1 { top: 20px; left: 10px; animation-duration: 2s; }
+.s2 { top: 60px; right: 10px; animation-duration: 2.5s; animation-delay: 0.7s; }
+.s3 { bottom: 100px; left: 5px; animation-duration: 1.8s; animation-delay: 1.2s; }
+@keyframes twinkleS {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.3) rotate(20deg); opacity: 0.4; }
+}
+
+/* Label card floating */
+.label-card {
+  position: absolute;
+  top: 40px;
+  left: -40px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 32px rgba(255,96,64,0.18), 0 2px 8px rgba(0,0,0,0.06);
+  z-index: 10;
+  animation: floatCard 4s ease-in-out infinite;
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-8px) rotate(-3deg); }
+}
+.label-card-title { font-size: 12px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+.label-card-sub { font-size: 11px; color: var(--light); }
+
+.label-card2 {
+  position: absolute;
+  bottom: 120px;
+  right: -44px;
+  background: var(--teal);
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 28px rgba(0,137,123,0.3);
+  z-index: 10;
+  animation: floatCard2 5s ease-in-out infinite;
+  color: #fff;
+}
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0) rotate(4deg); }
+  50% { transform: translateY(-6px) rotate(4deg); }
+}
+.label-card2-num { font-size: 22px; font-weight: 900; }
+.label-card2-label { font-size: 10px; font-weight: 700; opacity: 0.8; letter-spacing: 0.5px; }
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  background: var(--bg2);
+  padding: 96px 56px;
+  border-top: 1.5px solid rgba(255,96,64,0.1);
+  border-bottom: 1.5px solid rgba(255,96,64,0.1);
+}
+.how-inner { max-width: 1040px; margin: 0 auto; }
+
+.section-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--coral);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.section-h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 900;
+  letter-spacing: -1.2px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 56px;
+}
+
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+.step-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(255,96,64,0.1);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.step-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(255,96,64,0.12); }
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.step-card:hover::before { opacity: 1; }
+.step-card:nth-child(1)::before { background: linear-gradient(to right, var(--coral), var(--yellow)); }
+.step-card:nth-child(2)::before { background: linear-gradient(to right, var(--yellow), var(--teal)); }
+.step-card:nth-child(3)::before { background: linear-gradient(to right, var(--teal), var(--coral)); }
+
+.step-num-big {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 56px;
+  font-weight: 900;
+  color: rgba(255,96,64,0.07);
+  line-height: 1;
+}
+.step-icon { font-size: 32px; margin-bottom: 18px; display: block; }
+.step-title { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.3px; }
+.step-desc { font-size: 14px; color: var(--mid); line-height: 1.75; }
+
+/* ─── RECIPES ─── */
+.recipes-section {
+  padding: 96px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.recipes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+.recipes-h2 { font-size: 34px; font-weight: 900; letter-spacing: -1.2px; color: var(--ink); }
+.recipes-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--coral);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.2s;
+}
+.recipes-link:hover { gap: 10px; }
+
+.recipe-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.recipe-card {
+  text-decoration: none;
+  display: block;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg2);
+  border: 1.5px solid rgba(255,96,64,0.1);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(255,96,64,0.15);
+  border-color: var(--coral-md);
+}
+.recipe-img { aspect-ratio: 4/3; position: relative; overflow: hidden; }
+.recipe-bg { position: absolute; inset: 0; transition: transform 0.4s; }
+.recipe-card:hover .recipe-bg { transform: scale(1.06); }
+.recipe-body { padding: 14px 16px; }
+.recipe-name { font-size: 15px; font-weight: 800; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.2px; }
+.recipe-meta { font-size: 12px; font-weight: 600; color: var(--light); }
+
+/* ─── CTA ─── */
+.cta-section {
+  padding: 96px 56px;
+  background: var(--bg2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  border-top: 1.5px solid rgba(255,96,64,0.1);
+}
+.cta-eyebrow { font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 14px; }
+.cta-title { font-size: clamp(32px, 4vw, 52px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; color: var(--ink); margin-bottom: 18px; }
+.cta-title em { font-style: normal; color: var(--coral); }
+.cta-desc { font-size: 17px; color: var(--mid); line-height: 1.8; margin-bottom: 40px; }
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--coral);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 18px 44px;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform 0.22s, box-shadow 0.22s;
+  box-shadow: 0 4px 24px rgba(255,96,64,0.35);
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(255,96,64,0.45); }
+
+/* Big stat on right */
+.cta-stats { display: flex; flex-direction: column; gap: 24px; }
+.stat-big {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 32px;
+  border: 1.5px solid rgba(255,96,64,0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-big:hover { transform: translateX(6px); box-shadow: 0 8px 32px rgba(255,96,64,0.1); }
+.stat-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.si-coral { background: var(--coral-lt); }
+.si-teal { background: var(--teal-lt); }
+.si-yellow { background: #FFFBE6; }
+.stat-n { font-size: 28px; font-weight: 900; color: var(--ink); letter-spacing: -1px; }
+.stat-l { font-size: 13px; font-weight: 600; color: var(--light); }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1.5px solid rgba(255,96,64,0.1);
+  padding: 28px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg);
+}
+.footer-logo { font-size: 17px; font-weight: 900; color: var(--ink); text-decoration: none; }
+.footer-logo .alco { color: var(--coral); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; font-weight: 600; color: var(--light); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--coral); }
+.footer-copy { font-size: 12px; color: var(--light); }
+
+/* animations */
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.hero-content { animation: fadeLeft 0.7s ease both; }
+.cocktail-scene { animation: fadeRight 0.8s 0.15s ease both; }
+
+@media (max-width: 960px) {
+  header { padding: 0 20px; }
+  nav a:not(.nav-cta) { display: none; }
+  .hero { grid-template-columns: 1fr; max-height: none; }
+  .hero-right { height: 460px; }
+  .hero-left { padding: 60px 20px 40px; }
+  .how-section, .recipes-section { padding: 64px 20px; }
+  .steps-grid, .recipe-grid { grid-template-columns: repeat(2,1fr); gap: 14px; }
+  .cta-section { grid-template-columns: 1fr; padding: 64px 20px; gap: 40px; }
+  footer { flex-direction: column; gap: 16px; padding: 24px 20px; text-align: center; }
+  .label-card { display: none; }
+  .label-card2 { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">
+    <span class="alco">Alco</span>Berry
+    <span class="logo-badge">Bot</span>
+  </a>
+  <nav>
+    <a href="#">Рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <a href="https://t.me/cocktail_generator_bot" class="nav-cta" target="_blank">Открыть бота</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-blob blob-a"></div>
+    <div class="hero-blob blob-b"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">🌿 429 рецептов · Inshaker</div>
+      <h1>
+        Миксуй коктейли дома из того, что есть <span class="wave">в наличии</span>
+      </h1>
+      <p class="hero-sub">
+        Укажи ингредиенты из своего бара — бот подберёт идеальный рецепт
+        и проведёт тебя шаг за шагом прямо в Telegram.
+      </p>
+      <div class="hero-btns">
+        <a href="https://t.me/cocktail_generator_bot" class="btn-primary" target="_blank">
+          🍸 Открыть бота бесплатно
+        </a>
+        <a href="#" class="btn-secondary">Все рецепты →</a>
+      </div>
+      <div class="social-proof">
+        <div class="sp-avatars">
+          <div class="sp-avatar">😊</div>
+          <div class="sp-avatar">🧑</div>
+          <div class="sp-avatar">👩</div>
+          <div class="sp-avatar">👨</div>
+        </div>
+        <div class="sp-text"><strong>Тысячи</strong> уже пробуют каждый день</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="sun-bg"></div>
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+    <div class="ring ring3"></div>
+
+    <div class="label-card">
+      <div class="label-card-title">🔥 Топ сезона</div>
+      <div class="label-card-sub">Апероль Шприц</div>
+    </div>
+
+    <div class="cocktail-scene">
+      <div class="sparkle s1">✦</div>
+      <div class="sparkle s2">✦</div>
+      <div class="sparkle s3">✦</div>
+
+      <div class="glass-wrap">
+        <div class="orange-slice"></div>
+        <div class="glass-bowl">
+          <div class="glass-bowl-inner">
+            <div class="liquid">
+              <div class="ice-o io1"></div>
+              <div class="ice-o io2"></div>
+              <div class="ice-o io3"></div>
+              <div class="bubble b1"></div>
+              <div class="bubble b2"></div>
+              <div class="bubble b3"></div>
+              <div class="bubble b4"></div>
+            </div>
+            <div class="g-highlight"></div>
+          </div>
+          <div class="cond cond1"></div>
+          <div class="cond cond2"></div>
+          <div class="cond cond3"></div>
+        </div>
+        <div class="g-stem"></div>
+        <div class="g-base"></div>
+      </div>
+      <div class="c-shadow"></div>
+    </div>
+
+    <div class="label-card2">
+      <div class="label-card2-num">429</div>
+      <div class="label-card2-label">рецептов</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-eyebrow">Как это работает</div>
+    <h2 class="section-h2">Три простых шага<br>до идеального коктейля</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num-big">1</div>
+        <span class="step-icon">📱</span>
+        <div class="step-title">Добавь ингредиенты</div>
+        <p class="step-desc">Укажи всё, что есть у тебя дома — водка, лайм, мята, ром, что угодно</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num-big">2</div>
+        <span class="step-icon">🍹</span>
+        <div class="step-title">Получи подборку</div>
+        <p class="step-desc">Бот мгновенно покажет, какие коктейли можно приготовить прямо сейчас</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num-big">3</div>
+        <span class="step-icon">✅</span>
+        <div class="step-title">Готовь по рецепту</div>
+        <p class="step-desc">Пошаговая инструкция с пропорциями — всё понятно с первого раза</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECIPES -->
+<section class="recipes-section">
+  <div class="recipes-header">
+    <h2 class="recipes-h2">Популярные рецепты</h2>
+    <a href="#" class="recipes-link">Все 429 →</a>
+  </div>
+  <div class="recipe-grid" id="recipeGrid"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div>
+    <div class="cta-eyebrow">Начать бесплатно</div>
+    <h2 class="cta-title">Готов <em>попробовать?</em></h2>
+    <p class="cta-desc">Бесплатно. Работает прямо в Telegram.<br>Никакой регистрации. Никаких приложений.</p>
+    <a href="https://t.me/cocktail_generator_bot" class="btn-cta" target="_blank">Открыть @cocktail_generator_bot →</a>
+  </div>
+  <div class="cta-stats">
+    <div class="stat-big">
+      <div class="stat-icon si-coral">🍸</div>
+      <div>
+        <div class="stat-n">429</div>
+        <div class="stat-l">рецептов в базе Inshaker</div>
+      </div>
+    </div>
+    <div class="stat-big">
+      <div class="stat-icon si-teal">✓</div>
+      <div>
+        <div class="stat-n">0 ₽</div>
+        <div class="stat-l">полностью бесплатно</div>
+      </div>
+    </div>
+    <div class="stat-big">
+      <div class="stat-icon si-yellow">⚡</div>
+      <div>
+        <div class="stat-n">30 сек</div>
+        <div class="stat-l">до первого рецепта</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo"><span class="alco">Alco</span>Berry</a>
+  <div class="footer-links">
+    <a href="#">Все рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <a href="https://t.me/cocktail_generator_bot" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-copy">© 2026 AlcoBerry</div>
+</footer>
+
+<script>
+const cocktails = [
+  { name: "Апероль Шприц", ing: 4, grad: "linear-gradient(150deg,#FFF3E0 0%,#FFB74D 55%,#F57C00 100%)" },
+  { name: "Мохито", ing: 7, grad: "linear-gradient(150deg,#E8F5E9 0%,#66BB6A 55%,#2E7D32 100%)" },
+  { name: "Маргарита", ing: 5, grad: "linear-gradient(150deg,#FFFDE7 0%,#FFD54F 55%,#FF8F00 100%)" },
+  { name: "Негрони", ing: 3, grad: "linear-gradient(150deg,#FCE4EC 0%,#EF5350 55%,#B71C1C 100%)" },
+  { name: "Клубничный Дайкири", ing: 5, grad: "linear-gradient(150deg,#FCE4EC 0%,#F06292 55%,#C2185B 100%)" },
+  { name: "Пина Колада", ing: 6, grad: "linear-gradient(150deg,#FFFDE7 0%,#FFE082 55%,#F57F17 100%)" },
+  { name: "Космополитен", ing: 5, grad: "linear-gradient(150deg,#F3E5F5 0%,#BA68C8 55%,#7B1FA2 100%)" },
+  { name: "Нью-Йорк Сауэр", ing: 6, grad: "linear-gradient(150deg,#E8EAF6 0%,#7986CB 55%,#283593 100%)" },
+];
+
+const grid = document.getElementById('recipeGrid');
+cocktails.forEach(c => {
+  grid.innerHTML += `
+    <a href="#" class="recipe-card">
+      <div class="recipe-img"><div class="recipe-bg" style="background:${c.grad}"></div></div>
+      <div class="recipe-body">
+        <div class="recipe-name">${c.name}</div>
+        <div class="recipe-meta">${c.ing} ингредиентов</div>
+      </div>
+    </a>`;
+});
+</script>
+</body>
+</html>

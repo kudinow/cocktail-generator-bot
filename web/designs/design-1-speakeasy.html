@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlcoBerry — Speakeasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0B0806;
+  --bg2:       #120E09;
+  --bg3:       #1A1510;
+  --gold:      #C49A2C;
+  --gold-lt:   #E2C05A;
+  --gold-dim:  #6B521A;
+  --burgundy:  #5C1515;
+  --cream:     #EDE0C0;
+  --cream-dim: #8A7A5C;
+  --white:     #FAF5EA;
+}
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── HEADER ─── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 64px;
+  border-bottom: 1px solid var(--gold-dim);
+  position: sticky;
+  top: 0;
+  background: rgba(11,8,6,0.96);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.logo span { font-weight: 400; color: var(--gold-dim); }
+
+nav { display: flex; gap: 40px; align-items: center; }
+
+nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+nav a:hover { color: var(--gold); }
+
+.nav-cta {
+  border: 1px solid var(--gold-dim);
+  padding: 8px 24px;
+  color: var(--gold) !important;
+  transition: all 0.25s !important;
+}
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--bg) !important;
+  border-color: var(--gold);
+}
+
+/* ─── ORNAMENT DIVIDER ─── */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+.ornament-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim));
+}
+.ornament-line.rev {
+  background: linear-gradient(to left, transparent, var(--gold-dim));
+}
+.ornament-sym {
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 6px;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(196,154,44,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(92,21,21,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-wrap {
+  position: relative;
+  max-width: 720px;
+  padding: 70px 60px;
+}
+
+/* Double border frame */
+.hero-frame {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--gold-dim);
+  pointer-events: none;
+}
+.hero-frame::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(196,154,44,0.2);
+}
+
+/* Corner ornaments */
+.corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  z-index: 1;
+}
+.c-tl { top: -1px; left: -1px; border-top: 3px solid var(--gold); border-left: 3px solid var(--gold); }
+.c-tr { top: -1px; right: -1px; border-top: 3px solid var(--gold); border-right: 3px solid var(--gold); }
+.c-bl { bottom: -1px; left: -1px; border-bottom: 3px solid var(--gold); border-left: 3px solid var(--gold); }
+.c-br { bottom: -1px; right: -1px; border-bottom: 3px solid var(--gold); border-right: 3px solid var(--gold); }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 36px;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '◆';
+  font-size: 7px;
+  opacity: 0.6;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(38px, 5.5vw, 68px);
+  font-weight: 900;
+  line-height: 1.12;
+  color: var(--white);
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-sub {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--cream-dim);
+  max-width: 460px;
+  margin: 0 auto 48px;
+  line-height: 1.75;
+}
+
+.btn-gold {
+  display: inline-block;
+  position: relative;
+  background: var(--gold);
+  color: var(--bg);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  padding: 17px 52px;
+  text-decoration: none;
+  transition: background 0.25s;
+}
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 1px solid var(--gold-dim);
+  transition: inset 0.25s;
+}
+.btn-gold:hover { background: var(--gold-lt); }
+.btn-gold:hover::before { inset: -8px; }
+
+/* ─── STEPS ─── */
+.steps-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 40px;
+}
+.section-eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 700;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.steps-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  align-items: start;
+  gap: 0;
+}
+.step { text-align: center; padding: 0 20px; }
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--gold);
+  opacity: 0.18;
+  line-height: 1;
+  margin-bottom: 16px;
+  transition: opacity 0.4s;
+}
+.step:hover .step-num { opacity: 0.5; }
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.step-desc { font-size: 16px; color: var(--cream-dim); font-weight: 300; line-height: 1.7; }
+
+.step-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  color: var(--gold-dim);
+  font-size: 18px;
+}
+
+/* ─── RECIPES ─── */
+.recipes-section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px 40px 80px;
+}
+.recipes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 28px;
+}
+.recipes-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+}
+.recipes-all {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+.recipes-all:hover { border-color: var(--gold); }
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  border: 1px solid var(--gold-dim);
+}
+
+.recipe-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.recipe-card-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.recipe-card:hover .recipe-card-bg { transform: scale(1.06); }
+.recipe-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,7,4,0.97) 0%, rgba(10,7,4,0.4) 45%, rgba(10,7,4,0.1) 100%);
+}
+.recipe-card-border {
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  z-index: 2;
+  transition: border-color 0.3s;
+  pointer-events: none;
+}
+.recipe-card:hover .recipe-card-border { border-color: var(--gold-dim); }
+
+.recipe-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 1;
+}
+.recipe-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 5px;
+}
+.recipe-meta {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  text-align: center;
+  padding: 80px 24px 100px;
+  position: relative;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(92,21,21,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 64px 48px;
+  border: 1px solid var(--gold-dim);
+  position: relative;
+}
+.cta-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(196,154,44,0.15);
+  pointer-events: none;
+}
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 46px);
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 16px;
+  line-height: 1.2;
+  position: relative;
+}
+.cta-title em { font-style: italic; color: var(--gold); }
+.cta-desc {
+  font-size: 18px;
+  color: var(--cream-dim);
+  font-weight: 300;
+  margin-bottom: 44px;
+  line-height: 1.7;
+  position: relative;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--gold-dim);
+  padding: 28px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.footer-links { display: flex; gap: 32px; }
+.footer-links a {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 13px; color: var(--cream-dim); opacity: 0.6; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-eyebrow { animation: fadeUp 0.7s ease both; }
+h1 { animation: fadeUp 0.7s 0.1s ease both; }
+.hero-sub { animation: fadeUp 0.7s 0.2s ease both; }
+.btn-gold { animation: fadeUp 0.7s 0.35s ease both; }
+
+@keyframes shimmerPulse {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.35; }
+}
+.step:nth-child(1) .step-num { animation: shimmerPulse 4s 0s ease-in-out infinite; }
+.step:nth-child(3) .step-num { animation: shimmerPulse 4s 1.3s ease-in-out infinite; }
+.step:nth-child(5) .step-num { animation: shimmerPulse 4s 2.6s ease-in-out infinite; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 800px) {
+  header { padding: 16px 20px; }
+  nav a:not(.nav-cta) { display: none; }
+  .hero-wrap { padding: 48px 24px; }
+  .steps-section { padding: 60px 20px; }
+  .steps-row { grid-template-columns: 1fr; gap: 40px; }
+  .step-sep { display: none; }
+  .recipes-section { padding: 20px 20px 60px; }
+  .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+  footer { flex-direction: column; gap: 16px; padding: 24px; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .cta-wrap { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">Alco<span>Berry</span></a>
+  <nav>
+    <a href="#">Рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <a href="https://t.me/cocktail_generator_bot" class="nav-cta" target="_blank">Открыть бота</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-wrap">
+    <div class="hero-frame">
+      <div class="corner c-tl"></div>
+      <div class="corner c-tr"></div>
+      <div class="corner c-bl"></div>
+      <div class="corner c-br"></div>
+    </div>
+    <div class="hero-eyebrow">429 рецептов коллекции Inshaker</div>
+    <h1>Миксуй коктейли<br><em>дома</em> из того,<br>что есть в наличии</h1>
+    <p class="hero-sub">Укажи ингредиенты из своего бара — бот подберёт идеальный рецепт и проведёт тебя шаг за шагом прямо в Telegram.</p>
+    <a href="https://t.me/cocktail_generator_bot" class="btn-gold" target="_blank">Открыть бота бесплатно</a>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps-section">
+  <div class="ornament" style="margin-bottom:32px">
+    <div class="ornament-line rev"></div>
+    <div class="ornament-sym">◆ ◆ ◆</div>
+    <div class="ornament-line"></div>
+  </div>
+  <p class="section-eyebrow">Алгоритм</p>
+  <h2 class="section-title">Как это работает</h2>
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-num">I</div>
+      <div class="step-title">Добавь ингредиенты</div>
+      <p class="step-desc">Укажи всё, что есть у тебя дома — водка, лайм, мята, ром, что угодно</p>
+    </div>
+    <div class="step-sep">◆</div>
+    <div class="step">
+      <div class="step-num">II</div>
+      <div class="step-title">Получи подборку</div>
+      <p class="step-desc">Бот мгновенно покажет, какие коктейли можно приготовить прямо сейчас</p>
+    </div>
+    <div class="step-sep">◆</div>
+    <div class="step">
+      <div class="step-num">III</div>
+      <div class="step-title">Готовь по рецепту</div>
+      <p class="step-desc">Пошаговая инструкция с пропорциями — всё понятно с первого раза</p>
+    </div>
+  </div>
+  <div class="ornament" style="margin-top:56px">
+    <div class="ornament-line rev"></div>
+    <div class="ornament-sym">◆</div>
+    <div class="ornament-line"></div>
+  </div>
+</section>
+
+<!-- RECIPES -->
+<section class="recipes-section">
+  <div class="recipes-header">
+    <h2 class="recipes-h2">Популярные рецепты</h2>
+    <a href="#" class="recipes-all">Все рецепты →</a>
+  </div>
+  <div class="recipe-grid" id="recipeGrid"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-wrap">
+    <div class="corner c-tl"></div>
+    <div class="corner c-tr"></div>
+    <div class="corner c-bl"></div>
+    <div class="corner c-br"></div>
+    <p class="section-eyebrow" style="margin-bottom:20px">Начать бесплатно</p>
+    <h2 class="cta-title">Готов <em>попробовать?</em></h2>
+    <p class="cta-desc">Бесплатно. Работает прямо в Telegram.<br>Никакой регистрации.</p>
+    <a href="https://t.me/cocktail_generator_bot" class="btn-gold" target="_blank">Открыть @cocktail_generator_bot</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">AlcoBerry</a>
+  <div class="footer-links">
+    <a href="#">Все рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <a href="https://t.me/cocktail_generator_bot" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-copy">© 2026 AlcoBerry</div>
+</footer>
+
+<script>
+const cocktails = [
+  { name: "Мохито", ing: 7, grad: "linear-gradient(150deg,#0A2E16 0%,#1A6B38 55%,#5BAF6E 100%)" },
+  { name: "Маргарита", ing: 5, grad: "linear-gradient(150deg,#2E2A00 0%,#8B7500 50%,#D4B800 100%)" },
+  { name: "Б-52", ing: 3, grad: "linear-gradient(to bottom,#1A0800 0%,#6B2A00 40%,#C97B1A 75%,#F0D090 100%)" },
+  { name: "Пина Колада", ing: 6, grad: "linear-gradient(150deg,#1A1200 0%,#8B6B00 50%,#F5C842 100%)" },
+  { name: "Апероль Шприц", ing: 4, grad: "linear-gradient(150deg,#3D1200 0%,#B84010 55%,#FF8C42 100%)" },
+  { name: "Негрони", ing: 3, grad: "linear-gradient(150deg,#1A0000 0%,#6B0000 50%,#C42A2A 100%)" },
+  { name: "Клубничный Дайкири", ing: 5, grad: "linear-gradient(150deg,#3D0020 0%,#A8154A 50%,#FF5577 100%)" },
+  { name: "Космополитен", ing: 5, grad: "linear-gradient(150deg,#2A0040 0%,#7B1FA2 55%,#CE93D8 100%)" },
+  { name: "Белый Русский", ing: 3, grad: "linear-gradient(150deg,#0D0D0D 0%,#3D2B1A 50%,#8B6B4A 100%)" },
+  { name: "Лонг Айленд", ing: 8, grad: "linear-gradient(150deg,#1A0D00 0%,#8B5A00 50%,#D4A017 100%)" },
+  { name: "Кровавая Мэри", ing: 7, grad: "linear-gradient(150deg,#1A0000 0%,#8B0000 50%,#CC2222 100%)" },
+  { name: "Нью-Йорк Сауэр", ing: 6, grad: "linear-gradient(150deg,#0D001A 0%,#4A0080 55%,#9C27B0 100%)" },
+];
+
+const grid = document.getElementById('recipeGrid');
+cocktails.forEach(c => {
+  grid.innerHTML += `
+    <a href="#" class="recipe-card">
+      <div class="recipe-card-bg" style="background:${c.grad}"></div>
+      <div class="recipe-card-border"></div>
+      <div class="recipe-info">
+        <div class="recipe-name">${c.name}</div>
+        <div class="recipe-meta">${c.ing} ингредиентов</div>
+      </div>
+    </a>`;
+});
+</script>
+</body>
+</html>

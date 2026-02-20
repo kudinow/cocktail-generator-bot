@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lime:        #2CC84A;
+  --color-lime-light:  #E8FAE8;
+  --color-lime-mid:    #A8E6B0;
+  --color-forest:      #0B3018;
+  --color-ink:         #111A13;
+  --color-muted:       #4A6A4E;
+  --color-soft:        #9BB89E;
+  --color-surface:     #F5FDF5;
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #111A13;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), sans-serif;
+}

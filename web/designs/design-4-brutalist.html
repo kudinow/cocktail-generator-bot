@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlcoBerry — Brutalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:  #FFFFFF;
+  --black:  #0A0A0A;
+  --burn:   #FF3200;
+  --gray:   #F0F0F0;
+  --gray2:  #E0E0E0;
+  --mid:    #888;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ─── HEADER ─── */
+header {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 4px solid var(--black);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 100;
+  height: 64px;
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  border-right: 4px solid var(--black);
+  text-decoration: none;
+  background: var(--black);
+  flex-shrink: 0;
+}
+.logo-text {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: var(--burn);
+}
+.logo-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--mid);
+  margin-top: 2px;
+}
+
+nav {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+}
+nav a {
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  border-right: 2px solid var(--gray2);
+  transition: background 0.15s, color 0.15s;
+}
+nav a:hover { background: var(--black); color: var(--white); }
+
+.nav-count {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 11px;
+  color: var(--mid);
+  border-left: 2px solid var(--gray2);
+  letter-spacing: 1px;
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  padding: 0 32px !important;
+  background: var(--burn) !important;
+  color: var(--white) !important;
+  font-weight: 700;
+  border-right: none !important;
+  border-left: 4px solid var(--black) !important;
+  margin-left: auto;
+  transition: background 0.15s !important;
+}
+.nav-cta:hover { background: #CC2800 !important; }
+
+/* ─── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 64px);
+  border-bottom: 4px solid var(--black);
+}
+
+.hero-left {
+  padding: 60px 64px;
+  border-right: 4px solid var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Giant watermark number */
+.hero-watermark {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(200px, 22vw, 340px);
+  color: var(--gray);
+  line-height: 1;
+  user-select: none;
+  letter-spacing: -10px;
+  z-index: 0;
+}
+
+.hero-left-inner { position: relative; z-index: 1; }
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 28px;
+  border-left: 4px solid var(--burn);
+  padding-left: 14px;
+}
+
+h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(52px, 6.5vw, 96px);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  position: relative;
+}
+.h1-normal { color: var(--black); display: block; }
+.h1-outline {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--black);
+}
+.h1-burn { display: block; color: var(--burn); }
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.9;
+  margin-bottom: 48px;
+  max-width: 380px;
+  font-style: italic;
+}
+.hero-sub strong { color: var(--black); font-style: normal; }
+
+.btn-brutal {
+  display: inline-block;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  padding: 18px 48px;
+  text-decoration: none;
+  border: 4px solid var(--black);
+  position: relative;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.btn-brutal::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 100%;
+  height: 100%;
+  background: var(--burn);
+  z-index: -1;
+  transition: all 0.15s;
+}
+.btn-brutal:hover {
+  transform: translate(-4px, -4px);
+}
+.btn-brutal:hover::after {
+  bottom: -12px;
+  right: -12px;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Numbered stats */
+.stat-row {
+  border-bottom: 2px solid var(--black);
+  padding: 32px 48px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 20px;
+  align-items: center;
+  transition: background 0.15s;
+}
+.stat-row:last-child { border-bottom: none; flex: 1; }
+.stat-row:hover { background: var(--gray); }
+.stat-n {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  color: var(--black);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.stat-n.burn { color: var(--burn); }
+.stat-text-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 4px;
+}
+.stat-text-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+  font-style: italic;
+}
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  border-bottom: 4px solid var(--black);
+  display: grid;
+  grid-template-columns: 300px 1fr 1fr 1fr;
+}
+
+.how-label-col {
+  background: var(--black);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-right: 4px solid var(--black);
+}
+.how-label {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.how-label em { color: var(--burn); font-style: normal; }
+
+.how-step {
+  padding: 60px 40px;
+  border-right: 2px solid var(--black);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+.how-step:last-child { border-right: none; }
+.how-step:hover { background: var(--gray); }
+
+.how-step-num {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-family: 'Anton', sans-serif;
+  font-size: 120px;
+  color: var(--gray2);
+  line-height: 1;
+  user-select: none;
+}
+.how-step:hover .how-step-num { color: rgba(255,50,0,0.12); }
+
+.how-step-icon { font-size: 36px; margin-bottom: 20px; display: block; position: relative; }
+.how-step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  position: relative;
+}
+.how-step-desc {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.8;
+  font-style: italic;
+  position: relative;
+}
+
+/* ─── RECIPES ─── */
+.recipes-section {
+  border-bottom: 4px solid var(--black);
+}
+
+.recipes-header {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 4px solid var(--black);
+}
+.recipes-h2 {
+  flex: 1;
+  font-family: 'Anton', sans-serif;
+  font-size: 40px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 28px 48px;
+  border-right: 4px solid var(--black);
+}
+.recipes-meta {
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+  border-right: 4px solid var(--black);
+}
+.recipes-all {
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  background: var(--gray);
+  transition: background 0.15s, color 0.15s;
+}
+.recipes-all:hover { background: var(--black); color: var(--white); }
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.recipe-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  border-right: 2px solid var(--black);
+  border-bottom: 2px solid var(--black);
+}
+.recipe-card:nth-child(4n) { border-right: none; }
+.recipe-card-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s;
+  filter: grayscale(30%);
+}
+.recipe-card:hover .recipe-card-bg {
+  transform: scale(1.08);
+  filter: grayscale(0%);
+}
+.recipe-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 55%, transparent 100%);
+}
+/* Burn bar on hover */
+.recipe-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  background: var(--burn);
+  z-index: 3;
+  transition: width 0.3s;
+}
+.recipe-card:hover::before { width: 100%; }
+
+.recipe-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 2;
+}
+.recipe-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.recipe-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--burn);
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 480px;
+  border-bottom: 4px solid var(--black);
+}
+
+.cta-left {
+  background: var(--black);
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 4px solid var(--black);
+}
+.cta-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(52px, 6vw, 88px);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 32px;
+}
+.cta-title em { color: var(--burn); font-style: normal; }
+.cta-desc {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.9;
+  font-style: italic;
+  margin-bottom: 48px;
+}
+.btn-brutal-white {
+  display: inline-block;
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
+  letter-spacing: 3px;
+  padding: 18px 48px;
+  text-decoration: none;
+  border: 4px solid var(--white);
+  position: relative;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.btn-brutal-white::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 100%;
+  height: 100%;
+  background: var(--burn);
+  z-index: -1;
+  transition: all 0.15s;
+}
+.btn-brutal-white:hover { transform: translate(-4px,-4px); }
+.btn-brutal-white:hover::after { bottom: -12px; right: -12px; }
+
+.cta-right {
+  background: var(--burn);
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.cta-features { list-style: none; }
+.cta-features li {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: 1px;
+  padding: 16px 0;
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cta-features li:last-child { border-bottom: none; }
+.cta-features li::before { content: '→'; font-size: 24px; opacity: 0.7; }
+
+/* ─── FOOTER ─── */
+footer {
+  display: flex;
+  align-items: stretch;
+  height: 64px;
+  border-top: 2px solid var(--gray2);
+}
+.footer-logo {
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: var(--black);
+  text-decoration: none;
+  border-right: 2px solid var(--gray2);
+}
+.footer-links {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+.footer-links a {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  border-right: 1px solid var(--gray2);
+  transition: background 0.15s, color 0.15s;
+}
+.footer-links a:hover { background: var(--gray); color: var(--black); }
+.footer-copy {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--mid);
+  margin-left: auto;
+}
+
+@media (max-width: 900px) {
+  header { height: auto; flex-wrap: wrap; }
+  nav { order: 2; width: 100%; }
+  nav a:not(.nav-cta) { padding: 16px; border-bottom: 1px solid var(--gray2); }
+  .nav-count { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 48px 24px; }
+  .hero-right { display: none; }
+  .how-section { grid-template-columns: 1fr; }
+  .how-label-col { padding: 40px 24px; }
+  .how-step { border-right: none; border-bottom: 2px solid var(--black); }
+  .recipe-grid { grid-template-columns: repeat(2,1fr); }
+  .recipe-card:nth-child(2n) { border-right: none; }
+  .recipe-card:nth-child(4n) { border-right: 2px solid var(--black); }
+  .cta-section { grid-template-columns: 1fr; }
+  .cta-left, .cta-right { padding: 48px 24px; }
+  footer { flex-wrap: wrap; height: auto; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo-block">
+    <div>
+      <div class="logo-text">ALCO<wbr>BERRY</div>
+      <div class="logo-sub">COCKTAIL GENERATOR</div>
+    </div>
+  </a>
+  <nav>
+    <a href="#">Рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <span class="nav-count">429 рецептов в базе</span>
+    <a href="https://t.me/cocktail_generator_bot" class="nav-cta" target="_blank">ОТКРЫТЬ БОТА →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-watermark">429</div>
+    <div class="hero-left-inner">
+      <div class="hero-label">COCKTAIL GENERATOR · TELEGRAM BOT</div>
+      <h1>
+        <span class="h1-normal">МИКСУЙ</span>
+        <span class="h1-outline">КОКТЕЙЛИ</span>
+        <span class="h1-burn">ДОМА</span>
+      </h1>
+      <p class="hero-sub">
+        <strong>Из того, что есть в наличии.</strong> Укажи ингредиенты из своего бара —
+        бот подберёт рецепты и проведёт шаг за шагом прямо в Telegram.
+      </p>
+      <a href="https://t.me/cocktail_generator_bot" class="btn-brutal" target="_blank">Открыть бота →</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-row">
+      <div class="stat-n burn">429</div>
+      <div>
+        <div class="stat-text-label">Рецептов в базе</div>
+        <div class="stat-text-value">Коллекция Inshaker</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-n">0₽</div>
+      <div>
+        <div class="stat-text-label">Стоимость</div>
+        <div class="stat-text-value">Полностью бесплатно</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-n">∞</div>
+      <div>
+        <div class="stat-text-label">Ограничений</div>
+        <div class="stat-text-value">Никакой регистрации</div>
+      </div>
+    </div>
+    <div class="stat-row" style="flex:1;">
+      <div class="stat-n">3</div>
+      <div>
+        <div class="stat-text-label">Шага до коктейля</div>
+        <div class="stat-text-value">Добавь · Получи · Готовь</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-label-col">
+    <div class="how-label">КАК<br>ЭТО<br><em>РАБО-<br>ТА-<br>ЕТ</em></div>
+  </div>
+  <div class="how-step">
+    <div class="how-step-num">1</div>
+    <span class="how-step-icon">📱</span>
+    <div class="how-step-title">Добавь ингредиенты</div>
+    <p class="how-step-desc">Укажи всё, что есть у тебя дома — водка, лайм, мята, ром, что угодно</p>
+  </div>
+  <div class="how-step">
+    <div class="how-step-num">2</div>
+    <span class="how-step-icon">🍸</span>
+    <div class="how-step-title">Получи подборку</div>
+    <p class="how-step-desc">Бот мгновенно покажет, какие коктейли можно приготовить прямо сейчас</p>
+  </div>
+  <div class="how-step">
+    <div class="how-step-num">3</div>
+    <span class="how-step-icon">✅</span>
+    <div class="how-step-title">Готовь по рецепту</div>
+    <p class="how-step-desc">Пошаговая инструкция с пропорциями — всё понятно с первого раза</p>
+  </div>
+</section>
+
+<!-- RECIPES -->
+<section class="recipes-section">
+  <div class="recipes-header">
+    <div class="recipes-h2">ПОПУЛЯРНЫЕ РЕЦЕПТЫ</div>
+    <div class="recipes-meta">429 в коллекции</div>
+    <a href="#" class="recipes-all">Все рецепты →</a>
+  </div>
+  <div class="recipe-grid" id="recipeGrid"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-left">
+    <h2 class="cta-title">ГОТОВ<br><em>ПОПРО-<br>БОВАТЬ?</em></h2>
+    <p class="cta-desc">Бесплатно. Работает прямо в Telegram.<br>Никакой регистрации. Никаких приложений.</p>
+    <a href="https://t.me/cocktail_generator_bot" class="btn-brutal-white" target="_blank">ОТКРЫТЬ БОТА →</a>
+  </div>
+  <div class="cta-right">
+    <ul class="cta-features">
+      <li>Бесплатно</li>
+      <li>Telegram</li>
+      <li>Без регистрации</li>
+      <li>429 рецептов</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">ALCOBERRY</a>
+  <div class="footer-links">
+    <a href="#">Рецепты</a>
+    <a href="#">Ингредиенты</a>
+    <a href="https://t.me/cocktail_generator_bot" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-copy">© 2026</div>
+</footer>
+
+<script>
+const cocktails = [
+  { name: "Мохито", ing: 7, grad: "linear-gradient(150deg,#003320 0%,#006640 50%,#00A860 100%)" },
+  { name: "Маргарита", ing: 5, grad: "linear-gradient(150deg,#332200 0%,#997700 50%,#FFCC00 100%)" },
+  { name: "Б-52", ing: 3, grad: "linear-gradient(to bottom,#1A0500 0%,#6B2500 35%,#CC7A00 70%,#F0D090 100%)" },
+  { name: "Пина Колада", ing: 6, grad: "linear-gradient(150deg,#332800 0%,#997A00 50%,#FFCC44 100%)" },
+  { name: "Апероль Шприц", ing: 4, grad: "linear-gradient(150deg,#3D0E00 0%,#B84000 55%,#FF7733 100%)" },
+  { name: "Негрони", ing: 3, grad: "linear-gradient(150deg,#200000 0%,#800000 50%,#DD1111 100%)" },
+  { name: "Клубничный Дайкири", ing: 5, grad: "linear-gradient(150deg,#330015 0%,#990040 50%,#FF3377 100%)" },
+  { name: "Космополитен", ing: 5, grad: "linear-gradient(150deg,#1A0033 0%,#660099 55%,#AA22FF 100%)" },
+  { name: "Белый Русский", ing: 3, grad: "linear-gradient(150deg,#111 0%,#3D2B1A 50%,#8B6B4A 100%)" },
+  { name: "Лонг Айленд", ing: 8, grad: "linear-gradient(150deg,#1A1000 0%,#886600 50%,#DDAA00 100%)" },
+  { name: "Кровавая Мэри", ing: 7, grad: "linear-gradient(150deg,#150000 0%,#660000 50%,#CC2222 100%)" },
+  { name: "Нью-Йорк Сауэр", ing: 6, grad: "linear-gradient(150deg,#0A0020 0%,#3D007A 55%,#8800DD 100%)" },
+];
+
+const grid = document.getElementById('recipeGrid');
+cocktails.forEach(c => {
+  grid.innerHTML += `
+    <a href="#" class="recipe-card">
+      <div class="recipe-card-bg" style="background:${c.grad}"></div>
+      <div class="recipe-info">
+        <div class="recipe-name">${c.name}</div>
+        <div class="recipe-meta">${c.ing} ингр.</div>
+      </div>
+    </a>`;
+});
+</script>
+</body>
+</html>
