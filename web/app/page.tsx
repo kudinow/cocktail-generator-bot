@@ -23,7 +23,7 @@ export default function HomePage() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-lime-light border border-lime-mid text-forest text-[13px] font-semibold px-4 py-[7px] rounded-full mb-8">
               <span className="w-[7px] h-[7px] rounded-full bg-lime shadow-[0_0_0_3px_rgba(44,200,74,0.25)]" />
-              429 рецептов · бесплатно
+              1144 рецептов · бесплатно
             </div>
 
             <h1 className="text-[clamp(36px,4.2vw,62px)] font-extrabold leading-[1.08] tracking-[-2px] text-ink mb-5">
@@ -53,7 +53,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex gap-6 flex-wrap">
-              {["Без регистрации", "Работает в Telegram", "429 рецептов"].map((t) => (
+              {["Без регистрации", "Работает в Telegram", "1144 рецептов"].map((t) => (
                 <div key={t} className="flex items-center gap-1.5 text-[13px] font-medium text-soft">
                   <span className="text-[15px]">✓</span> {t}
                 </div>
@@ -98,7 +98,7 @@ export default function HomePage() {
           {/* Floating badge — bottom right */}
           <div className="absolute bottom-[14%] right-[4%] z-10 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_32px_rgba(11,48,24,0.15)]">
             <div className="text-[11px] font-semibold text-soft mb-0.5">Рецептов в базе</div>
-            <div className="text-[15px] font-extrabold text-ink tracking-tight">429 🍸</div>
+            <div className="text-[15px] font-extrabold text-ink tracking-tight">1144 🍸</div>
           </div>
         </div>
       </section>
@@ -138,7 +138,7 @@ export default function HomePage() {
             href="/cocktails/"
             className="text-sm font-semibold text-lime hover:gap-2 flex items-center gap-1 transition-all no-underline"
           >
-            Все 429 рецептов →
+            Все 1144 рецептов →
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -187,7 +187,7 @@ export default function HomePage() {
         </div>
         <ul className="list-none p-0 m-0">
           {[
-            "429 рецептов коктейлей из базы Inshaker",
+            "1144 рецептов коктейлей из базы Inshaker",
             "Подбор по ингредиентам из твоего бара",
             "Пошаговые инструкции с пропорциями",
             "Работает в Telegram — без приложений",

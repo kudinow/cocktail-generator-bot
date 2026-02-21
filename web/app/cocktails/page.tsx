@@ -5,7 +5,7 @@ import CocktailCard from "@/components/CocktailCard";
 export const metadata: Metadata = {
   title: "Все рецепты коктейлей",
   description:
-    "Каталог из 429 рецептов коктейлей. Найди рецепт по ингредиентам в Telegram-боте.",
+    "Каталог из 1144 рецептов коктейлей. Найди рецепт по ингредиентам в Telegram-боте.",
 };
 
 export default function CocktailsPage() {

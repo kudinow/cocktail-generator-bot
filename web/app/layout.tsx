@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "База из 429 рецептов коктейлей. Узнай рецепт в Telegram-боте — просто добавь ингредиенты, которые есть дома.",
+    "База из 1144 рецептов коктейлей. Узнай рецепт в Telegram-боте — просто добавь ингредиенты, которые есть дома.",
   openGraph: {
     siteName: SITE_NAME,
     type: "website",
